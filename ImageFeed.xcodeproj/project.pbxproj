@@ -105,6 +105,7 @@
 				465476502A5D9AAE00CAC5A6 /* SceneDelegate.swift */,
 				465476522A5D9AAE00CAC5A6 /* ViewController.swift */,
 				465476542A5D9AAE00CAC5A6 /* Main.storyboard */,
+				465476832A5DCE6D00CAC5A6 /* Resources */,
 				4654765A2A5D9AB000CAC5A6 /* Assets.xcassets */,
 				4654765C2A5D9AB000CAC5A6 /* LaunchScreen.storyboard */,
 				4654765F2A5D9AB000CAC5A6 /* Info.plist */,
@@ -128,6 +129,13 @@
 				465476742A5D9AB000CAC5A6 /* ImageFeedUITestsLaunchTests.swift */,
 			);
 			path = ImageFeedUITests;
+			sourceTree = "<group>";
+		};
+		465476832A5DCE6D00CAC5A6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
