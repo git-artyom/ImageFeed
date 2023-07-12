@@ -20,14 +20,70 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xbK-gW-k6V">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                                 <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="sectionIndexBackgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="154" id="lDJ-qo-U2S" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="390" height="154"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lDJ-qo-U2S" id="FTs-GD-fqO">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="154"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="ANw-re-l5p" userLabel="Cell Image">
+                                                    <rect key="frame" x="16" y="4" width="358" height="146"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KRS-he-dkK" userLabel="Like Button">
+                                                    <rect key="frame" x="332" y="4" width="42" height="42"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="like_button_on"/>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uWv-kQ-ecr">
+                                                    <rect key="frame" x="20" y="183" width="390" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ANw-re-l5p" firstAttribute="leading" secondItem="FTs-GD-fqO" secondAttribute="leading" constant="16" id="5Kc-8W-hOv"/>
+                                                <constraint firstItem="ANw-re-l5p" firstAttribute="trailing" secondItem="KRS-he-dkK" secondAttribute="trailing" id="82V-yE-X8r"/>
+                                                <constraint firstItem="KRS-he-dkK" firstAttribute="top" secondItem="ANw-re-l5p" secondAttribute="top" id="9mM-Yc-Qhu"/>
+                                                <constraint firstItem="ANw-re-l5p" firstAttribute="top" secondItem="FTs-GD-fqO" secondAttribute="top" constant="4" id="AaA-wv-dc7"/>
+                                                <constraint firstItem="ANw-re-l5p" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uWv-kQ-ecr" secondAttribute="trailing" constant="8" id="GgU-nj-F9J"/>
+                                                <constraint firstAttribute="bottom" secondItem="ANw-re-l5p" secondAttribute="bottom" constant="4" id="X5Y-Dq-Xg6"/>
+                                                <constraint firstItem="ANw-re-l5p" firstAttribute="bottom" secondItem="uWv-kQ-ecr" secondAttribute="bottom" constant="8" id="eNM-mU-4VH"/>
+                                                <constraint firstItem="uWv-kQ-ecr" firstAttribute="leading" secondItem="ANw-re-l5p" secondAttribute="leading" constant="8" id="faE-ie-3I1"/>
+                                                <constraint firstAttribute="trailing" secondItem="ANw-re-l5p" secondAttribute="trailing" constant="16" id="ha3-WY-V1l"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="cellImage" destination="ANw-re-l5p" id="RdZ-wH-zYk"/>
+                                            <outlet property="dateLabel" destination="uWv-kQ-ecr" id="BVF-7X-n53"/>
+                                            <outlet property="likeButton" destination="KRS-he-dkK" id="rLh-Bv-XPH"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="vmX-2G-jXR"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="3PQ-Bx-y9Y"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="xbK-gW-k6V" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="SSN-aM-IOx"/>
-                            <constraint firstAttribute="bottom" secondItem="xbK-gW-k6V" secondAttribute="bottom" id="YcY-R5-mrc"/>
-                            <constraint firstItem="xbK-gW-k6V" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eTN-iZ-Pcl"/>
+                            <constraint firstItem="xbK-gW-k6V" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="YcY-R5-mrc"/>
+                            <constraint firstAttribute="top" secondItem="xbK-gW-k6V" secondAttribute="top" id="eTN-iZ-Pcl"/>
                             <constraint firstAttribute="trailing" secondItem="xbK-gW-k6V" secondAttribute="trailing" id="hlU-Fc-3Ca"/>
                         </constraints>
                     </view>
@@ -37,10 +93,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="135.1145038167939" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="133.84615384615384" y="2.8436018957345972"/>
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="200" height="132"/>
+        <image name="like_button_on" width="42" height="42"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
