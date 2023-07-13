@@ -14,9 +14,21 @@ class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
+    
+    func setHorizontalGradientColor(view: UITableViewCell) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.view.bounds
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.yellow.cgColor]
+        self.view.layer.insertSublayer(gradientLayer, at: 0)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // для содержимого таблицы мы задаём отступ сверху/снизу
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
         
     }
     
@@ -24,6 +36,8 @@ class ImagesListViewController: UIViewController {
 
 
 extension ImagesListViewController: UITableViewDataSource {
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photosName.count
     }
@@ -36,7 +50,7 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         
         configCell(for: imageListCell, with: indexPath) //
-        return imageListCell // возвращаем ячейку
+        return imageListCell // показываем ячейку
     }
     
     
@@ -44,11 +58,16 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController: UITableViewDelegate {
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        
+        tableView.deselectRow(at: indexPath, animated: true) // отключаем отображение выбора ячейки
     }
     
+    // настраиваем размеры ячейки
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
         }
@@ -64,6 +83,7 @@ extension ImagesListViewController: UITableViewDelegate {
 
 extension ImagesListViewController {
     
+    // отдаем для показа заполненую ячейку
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return
@@ -77,3 +97,4 @@ extension ImagesListViewController {
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
+
