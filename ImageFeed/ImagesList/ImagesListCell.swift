@@ -17,7 +17,7 @@ final class ImagesListCell: UITableViewCell {
             super.layoutSublayers(of: self.layer)
             gradientLayer.frame = self.bounds
             
-        let colorSet = [UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.1),
+        let colorSet = [UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.01),
                         UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.9)]
             let location = [0.2, 1.0]
             
@@ -46,16 +46,18 @@ extension ImagesListCell {
             layer.endPoint = startEndPoints.1
         }
 
-        self.layer.insertSublayer(layer, above: self.layer)
+        cellImage.layer.insertSublayer(layer, above: self.layer)
     }
 }
 
+// альтернативный метод градиента
 extension ImagesListCell {
     func setHorizontalGradientColor(view: UITableViewCell) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.bounds
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.yellow.cgColor]
-        self.layer.insertSublayer(gradientLayer, at: 0)
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        
+        cellImage.layer.insertSublayer(gradientLayer, above: self.layer)
         
     }
 }
