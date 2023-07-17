@@ -1,7 +1,7 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
@@ -14,14 +14,6 @@ class ImagesListViewController: UIViewController {
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
-    
-    func setHorizontalGradientColor(view: UITableViewCell) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.view.bounds
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.yellow.cgColor]
-        self.view.layer.insertSublayer(gradientLayer, at: 0)
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
