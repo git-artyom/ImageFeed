@@ -5,6 +5,11 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        SingleImageView.image = image
+    }
+    
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }
@@ -12,11 +17,13 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBOutlet var SingleImageView: UIImageView!
+    @IBOutlet private var SingleImageView: UIImageView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        SingleImageView.image = image
+    @IBAction func didTapBackButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
+    
+    
+    
     
 }

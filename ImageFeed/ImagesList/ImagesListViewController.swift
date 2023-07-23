@@ -3,6 +3,9 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     
+    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    
     @IBOutlet private var tableView: UITableView!
     
     private lazy var dateFormatter: DateFormatter = { // формируем календарную дату
@@ -12,8 +15,7 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

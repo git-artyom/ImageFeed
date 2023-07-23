@@ -22,7 +22,7 @@ final class ImagesListCell: UITableViewCell {
     
 }
 
-
+// метод отображения градиента
 extension ImagesListCell {
     
     func addGradient() {
