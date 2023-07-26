@@ -181,8 +181,8 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hzM-s0-dIy">
                                 <rect key="frame" x="20" y="20" width="374" height="856"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="El4-Bd-7VJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="El4-Bd-7VJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                         <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                 </subviews>
@@ -210,12 +210,23 @@
                                     <action selector="didTapBackButton:" destination="vFA-PK-mUO" eventType="touchUpInside" id="4wa-a2-h5x"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNx-CT-mLs">
+                                <rect key="frame" x="182" y="810" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="rqi-fs-AUA"/>
+                                    <constraint firstAttribute="width" constant="50" id="zSb-Hy-zOg"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Sharing"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="IO9-kZ-GJT"/>
                         <color key="backgroundColor" red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="IO9-kZ-GJT" firstAttribute="bottom" secondItem="ZNx-CT-mLs" secondAttribute="bottom" constant="36" id="KW3-7h-0cQ"/>
                             <constraint firstAttribute="bottom" secondItem="hzM-s0-dIy" secondAttribute="bottom" constant="20" symbolic="YES" id="PcC-aI-1XO"/>
                             <constraint firstAttribute="trailing" secondItem="hzM-s0-dIy" secondAttribute="trailing" constant="20" symbolic="YES" id="Qp7-Ev-una"/>
+                            <constraint firstItem="ZNx-CT-mLs" firstAttribute="centerX" secondItem="IO9-kZ-GJT" secondAttribute="centerX" id="adi-1v-F4F"/>
                             <constraint firstItem="ulJ-ew-3XA" firstAttribute="top" secondItem="IO9-kZ-GJT" secondAttribute="top" constant="8" id="fMc-uN-0uh"/>
                             <constraint firstItem="hzM-s0-dIy" firstAttribute="top" secondItem="mlc-cM-sO8" secondAttribute="top" constant="20" symbolic="YES" id="gd0-Bb-dJs"/>
                             <constraint firstItem="ulJ-ew-3XA" firstAttribute="leading" secondItem="IO9-kZ-GJT" secondAttribute="leading" constant="8" id="n2d-2U-d5m"/>
@@ -258,6 +269,7 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="Backward" width="24" height="24"/>
+        <image name="Sharing" width="50" height="50"/>
         <image name="avatar" width="70" height="70"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="logout_button" width="24" height="24"/>
