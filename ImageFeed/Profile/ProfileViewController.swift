@@ -4,15 +4,14 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let profileImage = UIImage(named: "avatar")
         let avatarImageView = UIImageView(image: profileImage)
         view.addSubview(avatarImageView)
-
+        
         avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -69,10 +68,10 @@ final class ProfileViewController: UIViewController {
         logoutButton.leadingAnchor.constraint(greaterThanOrEqualTo: avatarImageView.trailingAnchor, constant: 0).isActive = true
         
     }
-
+    
     @objc
     private func didTapButton(){}
-        
-    }
+    
+}
 
 
