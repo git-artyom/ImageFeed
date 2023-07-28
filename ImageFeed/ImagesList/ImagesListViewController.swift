@@ -67,6 +67,7 @@ extension ImagesListViewController: UITableViewDelegate {
         
         performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
         tableView.deselectRow(at: indexPath, animated: true) // отключаем отображение выбора ячейки
+        
     }
     
     // настраиваем размеры ячейки
