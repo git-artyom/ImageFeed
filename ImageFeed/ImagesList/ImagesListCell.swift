@@ -1,54 +1,39 @@
 
-
 import UIKit
 
 
 final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
+    private let gradientLayer = CAGradientLayer()
+    
     
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
     
-    var gradientLayer: CAGradientLayer?
     
-    override func layoutSublayers(of layer: CALayer) {
-        super.layoutSublayers(of: self.layer)
-        
-        if gradientLayer == nil {
-            gradientLayer = CAGradientLayer()
-            guard let gradientLayer = gradientLayer else { return }
-            gradientLayer.frame = self.bounds
-            
-            let colorSet = [UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.01),
-                            UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.8)]
-            let location = [0.2, 1.0]
-            
-            addGradient(with: gradientLayer, colorSet: colorSet, locations: location)
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addGradient()
+        gradientLayer.frame = cellImage.bounds
     }
+    
+    
 }
 
-
+// метод отображения градиента
 extension ImagesListCell {
     
-    func addGradient(with layer: CAGradientLayer, gradientFrame: CGRect? = nil, colorSet: [UIColor],
-                     locations: [Double], startEndPoints: (CGPoint, CGPoint)? = nil) {
-        layer.frame = gradientFrame ?? self.bounds
-        layer.frame.origin = .zero
+    func addGradient() {
+        gradientLayer.startPoint = CGPoint (x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint (x: 0.5, y: 1.0)
+        gradientLayer.colors = [
+            UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0).cgColor, UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.7).cgColor
+        ]
         
-        let layerColorSet = colorSet.map { $0.cgColor }
-        let layerLocations = locations.map { $0 as NSNumber }
-        
-        layer.colors = layerColorSet
-        layer.locations = layerLocations
-        
-        if let startEndPoints = startEndPoints {
-            layer.startPoint = startEndPoints.0
-            layer.endPoint = startEndPoints.1
-        }
-        
-        cellImage.layer.insertSublayer(layer, above: self.layer)
+        gradientLayer.locations = [0.9, 1.0]
+        cellImage.layer.addSublayer (gradientLayer)
     }
+    
 }
