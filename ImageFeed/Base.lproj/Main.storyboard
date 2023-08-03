@@ -217,6 +217,10 @@
                                     <action selector="didTapBackButton:" destination="bBd-H3-Jtm" eventType="touchUpInside" id="wTM-N8-ySy"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ZvK-aV-XrX">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="13y-k8-YmQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -231,6 +235,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="cnS-rf-xJE"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="ZvK-aV-XrX" id="HPX-nS-EK5"/>
                         <outlet property="webView" destination="n0b-fy-w7X" id="tvT-er-XDx"/>
                     </connections>
                 </viewController>

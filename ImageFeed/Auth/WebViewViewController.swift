@@ -18,8 +18,9 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
     
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    // Unsplash’s OAuth2 paths
+    // Unsplash’s OAuth2 path
     private let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     
     // делегат
@@ -52,7 +53,6 @@ final class WebViewViewController: UIViewController {
         
         let request = URLRequest(url: url)
         webView.load(request)
-        
     }
 }
 
@@ -89,4 +89,28 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
     
+    
+    // блок методов показа/скрытия индикатора загрузки
+    func showLoadingIndicator() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    
+    func hideLoadingIndicator() {
+        activityIndicator.isHidden = true
+    }
+    
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        hideLoadingIndicator()
+    }
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        showLoadingIndicator()
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        hideLoadingIndicator()
+    }
 }
+

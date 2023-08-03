@@ -120,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				4654765A2A5D9AB000CAC5A6 /* Assets.xcassets */,
+				4632B6902A7AC0110095AAAD /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -152,7 +153,6 @@
 				46536F9C2A5EF59500B2C178 /* ImagesList */,
 				4654764E2A5D9AAE00CAC5A6 /* AppDelegate.swift */,
 				465476502A5D9AAE00CAC5A6 /* SceneDelegate.swift */,
-				4632B6902A7AC0110095AAAD /* Constants.swift */,
 				465476542A5D9AAE00CAC5A6 /* Main.storyboard */,
 				4654765C2A5D9AB000CAC5A6 /* LaunchScreen.storyboard */,
 				4654765F2A5D9AB000CAC5A6 /* Info.plist */,
