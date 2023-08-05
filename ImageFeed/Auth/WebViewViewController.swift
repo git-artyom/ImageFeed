@@ -9,7 +9,6 @@ import UIKit
 import WebKit
 
 
-
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) // WebViewViewController получил код
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) // пользователь отменил авторизацию.
@@ -21,7 +20,6 @@ final class WebViewViewController: UIViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet var UIProgressView: UIProgressView!
-    
     
     // Unsplash’s OAuth2 path
     private let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
@@ -47,10 +45,10 @@ final class WebViewViewController: UIViewController {
         // формируем URL из компонентов
         var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
         urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: AccessKey),
-            URLQueryItem(name: "redirect_uri", value: RedirectURI),
+            URLQueryItem(name: "client_id", value: accessKey),
+            URLQueryItem(name: "redirect_uri", value: redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AccessScope)
+            URLQueryItem(name: "scope", value: accessScope)
         ]
         let url = urlComponents.url!
         
@@ -72,7 +70,7 @@ extension WebViewViewController: WKNavigationDelegate {
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) { // возвращает код авторизации, если он получен.
-            //TODO: process code                     //
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel) // Если код успешно получен, отменяем навигационное действие
         } else {
             decisionHandler(.allow) // и код не получен, разрешаем навигационное действие
@@ -95,7 +93,7 @@ extension WebViewViewController: WKNavigationDelegate {
     }
     
     
-    // блок методов показа/скрытия индикатора активности
+    // блок методов логики индикатора активности
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
