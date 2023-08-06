@@ -118,7 +118,7 @@ extension WebViewViewController: WKNavigationDelegate {
 }
 
 
-// блок с логикой progress bar
+// блок с логикой progress bar, KVO
 extension WebViewViewController {
     
     override func viewDidAppear(_ animated: Bool) {

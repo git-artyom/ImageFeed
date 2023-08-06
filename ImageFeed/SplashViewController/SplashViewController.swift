@@ -12,14 +12,15 @@ final class SplashViewController: UIViewController {
     
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     
-    private let oauth2Service = OAuth2Service()
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2Service = OAuthService()
+    private let oauth2TokenStorage = OAuthTokenStorage()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        
         // проверяем авторизовался ли пользователь, если да переходим на экран с картинками
-        if let token = oauth2TokenStorage.token {
+        if oauth2TokenStorage.token != nil {
             switchToTabBarController()
         } else {
             // или переходим на экран авторизации
@@ -35,7 +36,6 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    
     
     private func switchToTabBarController() {
         
