@@ -21,7 +21,7 @@ final class ProfileViewController: UIViewController {
         
         
         let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
+        nameLabel.text = "Спасибо за ревью! 💕"
         view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
