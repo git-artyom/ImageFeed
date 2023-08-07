@@ -33,6 +33,7 @@ final class OAuthService {
                 self.authToken = authToken
                 completion(.success(authToken))
             case .failure(let error):
+                assertionFailure("no token")
                 completion(.failure(error))
             }
         }
