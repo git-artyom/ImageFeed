@@ -18,24 +18,18 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet var UIProgressView: UIProgressView!
+    @IBOutlet private var webView: WKWebView!
+    @IBAction func didTapBackButton(_ sender: Any) {
+        delegate?.webViewViewControllerDidCancel(self)
+        
+    }
     
     // Unsplash’s OAuth2 path
     private let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     
     // делегат
     weak var delegate: WebViewViewControllerDelegate?
-    
-    
-    @IBOutlet private var webView: WKWebView!
-    
-    
-    @IBAction func didTapBackButton(_ sender: Any) {
-        delegate?.webViewViewControllerDidCancel(self)
-        
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
