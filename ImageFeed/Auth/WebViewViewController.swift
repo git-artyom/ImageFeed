@@ -14,7 +14,6 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) // пользователь отменил авторизацию.
 }
 
-
 final class WebViewViewController: UIViewController {
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
@@ -22,7 +21,6 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var webView: WKWebView!
     @IBAction func didTapBackButton(_ sender: Any) {
         delegate?.webViewViewControllerDidCancel(self)
-        
     }
     
     // Unsplash’s OAuth2 path
@@ -50,9 +48,7 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
-    
 }
-
 
 extension WebViewViewController: WKNavigationDelegate {
     
@@ -71,7 +67,6 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
     
-    
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,                         // Получаем из навигационного действия navigationAction URL.
@@ -86,7 +81,6 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
     
-    
     // блок методов логики индикатора активности
     func showLoadingIndicator() {
         activityIndicator.isHidden = false
@@ -96,7 +90,6 @@ extension WebViewViewController: WKNavigationDelegate {
     func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
-    
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hideLoadingIndicator()
