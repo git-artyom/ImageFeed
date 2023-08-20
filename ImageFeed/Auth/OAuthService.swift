@@ -33,7 +33,7 @@ final class OAuthService {
             return
         }
         
-        let task = data(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = urlSession.data(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
@@ -44,6 +44,7 @@ final class OAuthService {
                     completion(.success(authToken))
                     self.task = nil
                 case .failure(let error):
+                    assertionFailure("no token")
                     completion(.failure(error))
                     self.lastCode = nil
                 }
@@ -55,24 +56,23 @@ final class OAuthService {
     }
 }
 
-extension OAuthService {
-    
-    // запрос и обработка данных с сервера
-    func data(for request: URLRequest, complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void) -> URLSessionTask {
-        
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request ) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                }
-            }
-            complition(response)
-        }
-    }
-    
-}
-
+//extension OAuthService {
+//
+//    // запрос и обработка данных с сервера
+//    func data(for request: URLRequest, complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void) -> URLSessionTask {
+//
+//        let decoder = JSONDecoder()
+//        return urlSession.data(for: request ) { (result: Result<Data, Error>) in
+//            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
+//                Result {
+//                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
+//                }
+//            }
+//            complition(response)
+//        }
+//    }
+//
+//}
 
 // создаем запрос к usplash по схеме Authorization workflow
 extension OAuthService {
