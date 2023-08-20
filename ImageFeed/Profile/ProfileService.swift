@@ -12,7 +12,8 @@ final class ProfileService {
     
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private var profile: Profile?
+    static let shared = ProfileService()
+    private (set) var profile: Profile?
     var profileRequest: URLRequest? {
         URLRequest.makeHttpRequest(path: "/me", httpMethod: "GET")
     }
@@ -78,7 +79,7 @@ struct Profile {
     let username: String
     let name: String
     let bio: String
-    var loginName: String {
+    var login: String {
         get { "@\(username)" }
     }
     
