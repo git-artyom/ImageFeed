@@ -14,6 +14,10 @@ final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuthService()
     private let oauth2TokenStorage = OAuthTokenStorage()
+    private let profileService = ProfileService()
+    private var alertPresenter: AlertPresenterProtocol?
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -77,6 +81,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
+            UIBlockingProgressHUD.show()
             self.fetchOAuthToken(code)
         }
         
@@ -87,7 +92,8 @@ extension SplashViewController: AuthViewControllerDelegate {
         oauth2Service.fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success:
+            case .success(let token):
+                self.fetchProfile(token: token)
                 self.switchToTabBarController()
                 UIBlockingProgressHUD.dismiss()
             case .failure:
@@ -96,6 +102,37 @@ extension SplashViewController: AuthViewControllerDelegate {
                 break
             }
         }
+    }
+    
+    
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    UIBlockingProgressHUD.dismiss()
+                    self.switchToTabBarController()
+                case .failure:
+                    UIBlockingProgressHUD.dismiss()
+                    // TODO [Sprint 11] Показать ошибку
+                    break
+                }
+            }
+        }
+        
+}
+
+extension SplashViewController {
+    private func showAlert(){
+        let alert = AlertModel(title: "Что-то пошло не так(",
+                               message: "Не удалось войти в систему",
+                               buttonText: "Ок",
+                               completion: { [weak self] in
+            guard let self = self else { return }
+            oauth2TokenStorage.token = nil
+        })
+        alertPresenter = AlertPresenter(viewController: self)
+        alertPresenter?.show(in: alert)
     }
     
 }

@@ -14,8 +14,16 @@ final class ProfileService {
     private var task: URLSessionTask?
     static let shared = ProfileService()
     private (set) var profile: Profile?
+    private let OAuthToken = OAuthTokenStorage()
+
     var profileRequest: URLRequest? {
-        URLRequest.makeHttpRequest(path: "/me", httpMethod: "GET")
+        URLRequest.makeHttpRequest(path: "/me", httpMethod: Keys.httpMethod)
+    }
+    private struct Keys {
+        static let authorization = "Authorization"
+        static let bearer = "Bearer"
+        static let nilBio = "User has no description"
+        static let httpMethod = "GET"
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
@@ -25,11 +33,11 @@ final class ProfileService {
         task?.cancel()
         
         var requestProfile = profileRequest
-        requestProfile?.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        requestProfile?.addValue("\(Keys.bearer) \(token)", forHTTPHeaderField: Keys.authorization)
         
         guard let requestProfile = requestProfile else { return }
         
-        let task = urlSession.data(for: requestProfile) { [weak self] (result: Result<ProfileResult, Error>) in
+        let task = urlSession.objectTask(for: requestProfile) { [weak self] (result: Result<ProfileResult, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 
@@ -42,6 +50,8 @@ final class ProfileService {
                     self.profile = profile
                     completion(.success(profile))
                     self.task = nil
+                    print(result, "#############")
+                    print(profile, "@@@@@@@@@@@@@")
                     
                 case .failure(let error):
                     completion(.failure(error))

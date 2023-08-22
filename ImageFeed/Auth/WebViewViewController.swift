@@ -23,6 +23,8 @@ final class WebViewViewController: UIViewController {
         delegate?.webViewViewControllerDidCancel(self)
     }
     
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
     // Unsplash’s OAuth2 path
     private let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     
@@ -31,7 +33,7 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        progressObservation()
         webView.navigationDelegate = self
         
         // формируем URL из компонентов
@@ -49,6 +51,7 @@ final class WebViewViewController: UIViewController {
     }
     
 }
+
 
 extension WebViewViewController: WKNavigationDelegate {
     
@@ -80,6 +83,7 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
     }
+ 
     
     // блок методов логики индикатора активности
     func showLoadingIndicator() {
@@ -106,6 +110,7 @@ extension WebViewViewController: WKNavigationDelegate {
 
 
 // блок с логикой progress bar, KVO
+/*
 extension WebViewViewController {
     
     override func viewDidAppear(_ animated: Bool) {
@@ -138,3 +143,24 @@ extension WebViewViewController {
     }
     
 }
+*/
+
+extension WebViewViewController {
+    func progressObservation() {
+        
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
+    }
+    
+    private func updateProgress() {
+        UIProgressView.progress = Float(webView.estimatedProgress)
+        UIProgressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+}
+
+

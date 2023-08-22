@@ -1,14 +1,19 @@
 
 import UIKit
-
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
     private let nameLabel = UILabel()
-    private let profileImage = UIImage(named: "avatar")
     private let loginLabel = UILabel()
-    private  let descriptionLabel = UILabel()
-    private let profileServise = ProfileService.shared
+    private let descriptionLabel = UILabel()
+    private let profileServiсe = ProfileService.shared
+    private let OAuthToken = OAuthTokenStorage()
+    private var profileImageServiceObserver: NSObjectProtocol?
+    private let profileImageService = ProfileImageService.shared
+    private let avatarImageView : UIImageView = {
+    let profileImage = UIImageView(image: UIImage(named: "avatar"))
+                            return profileImage }()
     
     let logoutButton = UIButton.systemButton(
         with: UIImage(named: "logout_button")!,
@@ -16,13 +21,11 @@ final class ProfileViewController: UIViewController {
         action: #selector(Self.didTapButton)
     )
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
-        updateProfile(profile: profileServise.profile)
-        
+        updateProfileDetails(profile: profileServiсe.profile)
+    
     }
     
     @objc
@@ -36,10 +39,7 @@ extension ProfileViewController {
     
     private func addViews() {
         
-        
-        let avatarImageView = UIImageView(image: profileImage)
         view.addSubview(avatarImageView)
-        
         avatarImageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,13 +85,36 @@ extension ProfileViewController {
     }
 }
 
-
 extension ProfileViewController {
-    
-    func updateProfile(profile: Profile?) {
+    func updateProfileDetails(profile: Profile?) {
         guard let profile = profile else { return }
         nameLabel.text = profile.name
         loginLabel.text = profile.login
         descriptionLabel.text = profile.bio
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.DidChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in guard let self = self else { return }
+            self.updateAvatar()
+        }
+        updateAvatar()
     }
+    
+    private func updateAvatar() {
+        guard let avatarURL = profileImageService.avatarURL, let url = URL(string: avatarURL) else { return }
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+    
+        let avatarPlaceholderImage = UIImage(named: "placeholder")
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: avatarPlaceholderImage,
+            options: [.processor(processor)]
+        )
+    }
+    
 }
