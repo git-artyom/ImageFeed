@@ -15,7 +15,7 @@ final class ProfileImageService {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let DidChangeNotification = Notification.Name(rawValue: "Image Changes")
     private struct Keys {
         static let authorization = "Authorization"
         static let bearer = "Bearer"
@@ -29,27 +29,23 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
         if avatarURL != nil { return }
         task?.cancel()
-        
         var requestImage = profileImageURLRequest(userName: username)
         requestImage?.addValue("\(Keys.bearer) \(token)", forHTTPHeaderField: Keys.authorization)
-        
         guard let requestImage = requestImage else { return }
         
         let task = urlSession.objectTask(for: requestImage) { [weak self] (result: Result<UserResult, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                
                 switch result {
-                    
                 case .success(let body):
                     let avatarURL = body.profileImage?.small
                     guard let avatarURL = avatarURL else { return }
                     self.avatarURL = avatarURL
                     completion(.success(avatarURL))
                     NotificationCenter.default.post(
-                            name: ProfileImageService.DidChangeNotification,
-                            object: self,
-                            userInfo: [Keys.URL: avatarURL])
+                        name: ProfileImageService.DidChangeNotification,
+                        object: self,
+                        userInfo: [Keys.URL: avatarURL])
                     self.task = nil
                     
                 case .failure(let error):
@@ -66,7 +62,7 @@ final class ProfileImageService {
 }
 
 extension ProfileImageService {
-    // функция получения картинки профиля
+    // функция получения изображения профиля
     func profileImageURLRequest(userName: String) -> URLRequest? {
         URLRequest.makeHttpRequest(
             path: "/users/\(userName)",
@@ -92,4 +88,3 @@ extension ProfileImageService {
     }
     
 }
-

@@ -15,15 +15,18 @@ final class ProfileService {
     static let shared = ProfileService()
     private (set) var profile: Profile?
     private let OAuthToken = OAuthTokenStorage()
-
+    
     private struct Keys {
         static let authorization = "Authorization"
         static let bearer = "Bearer"
         static let httpMethod = "GET"
     }
     
+    var profileRequest: URLRequest? {
+        URLRequest.makeHttpRequest(path: "/me", httpMethod: Keys.httpMethod)
+    }
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
-        
         assert(Thread.isMainThread)
         if profile != nil { return }
         task?.cancel()
@@ -50,15 +53,9 @@ final class ProfileService {
                     self.profile = nil
                 }
             }
-            
         }
         self.task = task
         task.resume()
-        
-    }
-    var profileRequest: URLRequest? {
-        URLRequest.makeHttpRequest(path: "/me", httpMethod: Keys.httpMethod)
     }
     
 }
-

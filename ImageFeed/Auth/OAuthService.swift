@@ -10,6 +10,7 @@ import Foundation
 
 final class OAuthService {
     
+    static let shared = OAuthService()
     private let urlSession = URLSession.shared
     private var task: URLSessionTask? // Переменная для хранения указателя на последнюю созданную задачу
     private var lastCode: String? // Переменная для хранения значения code, которое было передано в последнем созданном запросе

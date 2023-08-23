@@ -24,6 +24,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
+        updateProfileImage()
         updateProfileDetails(profile: profileServiсe.profile)
         
     }
@@ -80,11 +81,12 @@ extension ProfileViewController {
         
     }
 }
-
+// блок методов обновления информации о пользователе ии аватара
 extension ProfileViewController {
+    
     func updateProfileDetails(profile: Profile?) {
 
-        guard let profile = profile else { print("error"); return }
+        guard let profile = profile else { print("error1"); return }
         nameLabel.text = profile.name
         loginLabel.text = profile.login
         descriptionLabel.text = profile.bio
@@ -93,23 +95,22 @@ extension ProfileViewController {
             forName: ProfileImageService.DidChangeNotification,
             object: nil,
             queue: .main) { [weak self] _ in guard let self = self else { return }
-            self.profileImage()
+            self.updateProfileImage()
         }
-        profileImage()
+        updateProfileImage()
     }
     
-    private func profileImage() {
-        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { return }
+    private func updateProfileImage() {
+        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { print("error2"); return }
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
     
-        let avatarPlaceholder = UIImage(named: "placeholder")
-        
         let processor = RoundCornerImageProcessor(cornerRadius: 20)
+        avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: avatarPlaceholder,
+            placeholder: UIImage(named: "placeholder.jpeg"),
             options: [.processor(processor)])
     }
     

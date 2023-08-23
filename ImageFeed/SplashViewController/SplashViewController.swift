@@ -12,11 +12,17 @@ import ProgressHUD
 final class SplashViewController: UIViewController {
     
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    private let oauth2Service = OAuthService()
+    private let oauth2Service = OAuthService.shared
+
     private let oauth2TokenStorage = OAuthTokenStorage()
-    private let profileService = ProfileService()
+    private let profileService = ProfileService.shared
     private var alertPresenter: AlertPresenterProtocol?
     private let profileImageService = ProfileImageService.shared
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 100)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -104,7 +110,6 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     
-    
     private func fetchProfile(token: String) {
         profileService.fetchProfile(token) { [weak self] result in
                 guard let self = self else { return }
@@ -118,7 +123,6 @@ extension SplashViewController: AuthViewControllerDelegate {
                 case .failure:
                     UIBlockingProgressHUD.dismiss()
                     showAlert()
-                    // TODO [Sprint 11] Показать ошибку
                     break
                 }
             }
@@ -140,3 +144,4 @@ extension SplashViewController {
     }
     
 }
+
