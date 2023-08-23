@@ -19,7 +19,7 @@ final class ProfileImageService {
     private struct Keys {
         static let authorization = "Authorization"
         static let bearer = "Bearer"
-        static let noBio = "User has no description"
+        static let noBio = "no bio"
         static let httpMethod = "GET"
         static let URL = "URL"
     }
@@ -66,7 +66,7 @@ final class ProfileImageService {
 }
 
 extension ProfileImageService {
-    
+    // функция получения картинки профиля
     func profileImageURLRequest(userName: String) -> URLRequest? {
         URLRequest.makeHttpRequest(
             path: "/users/\(userName)",
@@ -76,7 +76,6 @@ extension ProfileImageService {
 }
 
 extension ProfileImageService {
-    
     // структура для сохранения ответа изображения профиля
     struct UserResult: Codable {
         let profileImage: ProfileImage?

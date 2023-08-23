@@ -32,6 +32,7 @@
 		465476562A5D9AAE00CAC5A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 465476542A5D9AAE00CAC5A6 /* Main.storyboard */; };
 		4654765B2A5D9AB000CAC5A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4654765A2A5D9AB000CAC5A6 /* Assets.xcassets */; };
 		4654765E2A5D9AB000CAC5A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4654765C2A5D9AB000CAC5A6 /* LaunchScreen.storyboard */; };
+		465BF0912A962E22003EC49E /* ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465BF0902A962E22003EC49E /* ProfileModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		4654765F2A5D9AB000CAC5A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		465476642A5D9AB000CAC5A6 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4654766E2A5D9AB000CAC5A6 /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		465BF0902A962E22003EC49E /* ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				4632B6862A6AC6830095AAAD /* ProfileViewController.swift */,
 				4638A5162A9245170082116A /* ProfileService.swift */,
 				4638A5182A94ED790082116A /* ProfileImageService.swift */,
+				465BF0902A962E22003EC49E /* ProfileModels.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				4638A51D2A94FC1A0082116A /* AlertPresenterProtocol.swift in Sources */,
 				4638A4FF2A7D48310082116A /* OAuthService.swift in Sources */,
 				4632B6932A7ADAFA0095AAAD /* AuthViewController.swift in Sources */,
+				465BF0912A962E22003EC49E /* ProfileModels.swift in Sources */,
 				4638A51B2A94F8230082116A /* AlertPresenter.swift in Sources */,
 				4632B6912A7AC0110095AAAD /* Constants.swift in Sources */,
 				4632B68C2A6C31E50095AAAD /* SingleImageViewController.swift in Sources */,

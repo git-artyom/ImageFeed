@@ -16,13 +16,9 @@ final class ProfileService {
     private (set) var profile: Profile?
     private let OAuthToken = OAuthTokenStorage()
 
-    var profileRequest: URLRequest? {
-        URLRequest.makeHttpRequest(path: "/me", httpMethod: Keys.httpMethod)
-    }
     private struct Keys {
         static let authorization = "Authorization"
         static let bearer = "Bearer"
-        static let nilBio = "User has no description"
         static let httpMethod = "GET"
     }
     
@@ -31,12 +27,9 @@ final class ProfileService {
         assert(Thread.isMainThread)
         if profile != nil { return }
         task?.cancel()
-        
         var requestProfile = profileRequest
         requestProfile?.addValue("\(Keys.bearer) \(token)", forHTTPHeaderField: Keys.authorization)
-        
         guard let requestProfile = requestProfile else { return }
-        
         let task = urlSession.objectTask(for: requestProfile) { [weak self] (result: Result<ProfileResult, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -47,11 +40,10 @@ final class ProfileService {
                         username: body.username,
                         name: "\(body.firstName) \(body.lastName)",
                         bio: body.bio ?? "No Bio")
+                    print(profile)
                     self.profile = profile
                     completion(.success(profile))
                     self.task = nil
-                    print(result, "#############")
-                    print(profile, "@@@@@@@@@@@@@")
                     
                 case .failure(let error):
                     completion(.failure(error))
@@ -64,33 +56,9 @@ final class ProfileService {
         task.resume()
         
     }
-    
-}
-
-// структура для ответа с пользовательским инфо с unsplash
-struct ProfileResult: Codable {
-    
-    let username: String
-    let firstName: String
-    let lastName: String
-    let bio: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case username
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case bio
+    var profileRequest: URLRequest? {
+        URLRequest.makeHttpRequest(path: "/me", httpMethod: Keys.httpMethod)
     }
     
 }
 
-// структура для ui эллементов
-struct Profile {
-    let username: String
-    let name: String
-    let bio: String
-    var login: String {
-        get { "@\(username)" }
-    }
-    
-}

@@ -16,14 +16,14 @@ final class SplashViewController: UIViewController {
     private let oauth2TokenStorage = OAuthTokenStorage()
     private let profileService = ProfileService()
     private var alertPresenter: AlertPresenterProtocol?
-    
-    
+    private let profileImageService = ProfileImageService.shared
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // проверяем авторизовался ли пользователь, если да переходим на экран с картинками
-        if oauth2TokenStorage.token != nil {
+        if let authToken = oauth2TokenStorage.token{
+            self.fetchProfile(token: authToken)
             switchToTabBarController()
         } else {
             // или переходим на экран авторизации
@@ -109,11 +109,15 @@ extension SplashViewController: AuthViewControllerDelegate {
         profileService.fetchProfile(token) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
-                case .success:
+                case .success (let data):
+                    profileImageService.fetchProfileImageURL(
+                        token: token,
+                        username: data.username) { _ in }
                     UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
                     UIBlockingProgressHUD.dismiss()
+                    showAlert()
                     // TODO [Sprint 11] Показать ошибку
                     break
                 }

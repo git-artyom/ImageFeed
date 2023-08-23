@@ -25,7 +25,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         addViews()
         updateProfileDetails(profile: profileServiсe.profile)
-    
+        
     }
     
     @objc
@@ -47,7 +47,6 @@ extension ProfileViewController {
         avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
         
-        
         nameLabel.text = "Спасибо за ревью! 💕"
         view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +56,6 @@ extension ProfileViewController {
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .semibold)
         nameLabel.textColor = .white
         
-        
         loginLabel.text = "@katerina_nov"
         view.addSubview(loginLabel)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +64,6 @@ extension ProfileViewController {
         loginLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         loginLabel.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 100)
         
-        
         descriptionLabel.text = "Hello, World!"
         view.addSubview(descriptionLabel)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +71,6 @@ extension ProfileViewController {
         descriptionLabel.leadingAnchor.constraint(equalTo: loginLabel.leadingAnchor).isActive = true
         descriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         descriptionLabel.textColor = .white
-        
         
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
@@ -87,34 +83,34 @@ extension ProfileViewController {
 
 extension ProfileViewController {
     func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
+
+        guard let profile = profile else { print("error"); return }
         nameLabel.text = profile.name
         loginLabel.text = profile.login
         descriptionLabel.text = profile.bio
-        
+
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.DidChangeNotification,
             object: nil,
             queue: .main) { [weak self] _ in guard let self = self else { return }
-            self.updateAvatar()
+            self.profileImage()
         }
-        updateAvatar()
+        profileImage()
     }
     
-    private func updateAvatar() {
-        guard let avatarURL = profileImageService.avatarURL, let url = URL(string: avatarURL) else { return }
+    private func profileImage() {
+        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { return }
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
     
-        let avatarPlaceholderImage = UIImage(named: "placeholder")
+        let avatarPlaceholder = UIImage(named: "placeholder")
         
         let processor = RoundCornerImageProcessor(cornerRadius: 20)
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: avatarPlaceholderImage,
-            options: [.processor(processor)]
-        )
+            placeholder: avatarPlaceholder,
+            options: [.processor(processor)])
     }
     
 }
