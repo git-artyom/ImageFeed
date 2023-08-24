@@ -36,6 +36,7 @@ final class ProfileImageService {
         let task = urlSession.objectTask(for: requestImage) { [weak self] (result: Result<UserResult, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
+                
                 switch result {
                 case .success(let body):
                     let avatarURL = body.profileImage?.small
