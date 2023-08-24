@@ -34,6 +34,7 @@
 		4654765E2A5D9AB000CAC5A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4654765C2A5D9AB000CAC5A6 /* LaunchScreen.storyboard */; };
 		465BF0912A962E22003EC49E /* ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465BF0902A962E22003EC49E /* ProfileModels.swift */; };
 		465BF0942A968023003EC49E /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 465BF0932A968023003EC49E /* SwiftKeychainWrapper */; };
+		465BF0972A976ED6003EC49E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465BF0962A976ED6003EC49E /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		465476642A5D9AB000CAC5A6 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4654766E2A5D9AB000CAC5A6 /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		465BF0902A962E22003EC49E /* ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModels.swift; sourceTree = "<group>"; };
+		465BF0962A976ED6003EC49E /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 		4654764D2A5D9AAE00CAC5A6 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				465BF0952A976EC8003EC49E /* TabBar */,
 				4638A51E2A94FC590082116A /* AlertPresenter */,
 				4638A5052A7E8FFD0082116A /* Helpers */,
 				4638A4FB2A7D45E90082116A /* SplashViewController */,
@@ -224,6 +227,14 @@
 				4654765F2A5D9AB000CAC5A6 /* Info.plist */,
 			);
 			path = ImageFeed;
+			sourceTree = "<group>";
+		};
+		465BF0952A976EC8003EC49E /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				465BF0962A976ED6003EC49E /* TabBarController.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,6 +391,7 @@
 				4638A4FF2A7D48310082116A /* OAuthService.swift in Sources */,
 				4632B6932A7ADAFA0095AAAD /* AuthViewController.swift in Sources */,
 				465BF0912A962E22003EC49E /* ProfileModels.swift in Sources */,
+				465BF0972A976ED6003EC49E /* TabBarController.swift in Sources */,
 				4638A51B2A94F8230082116A /* AlertPresenter.swift in Sources */,
 				4632B6912A7AC0110095AAAD /* Constants.swift in Sources */,
 				4632B68C2A6C31E50095AAAD /* SingleImageViewController.swift in Sources */,
