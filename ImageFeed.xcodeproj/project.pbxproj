@@ -35,6 +35,7 @@
 		465BF0912A962E22003EC49E /* ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465BF0902A962E22003EC49E /* ProfileModels.swift */; };
 		465BF0942A968023003EC49E /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 465BF0932A968023003EC49E /* SwiftKeychainWrapper */; };
 		465BF0972A976ED6003EC49E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465BF0962A976ED6003EC49E /* TabBarController.swift */; };
+		465BF0992A9792E4003EC49E /* AuthViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465BF0982A9792E4003EC49E /* AuthViewControllerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		4654766E2A5D9AB000CAC5A6 /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		465BF0902A962E22003EC49E /* ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModels.swift; sourceTree = "<group>"; };
 		465BF0962A976ED6003EC49E /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		465BF0982A9792E4003EC49E /* AuthViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewControllerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				4638A4FE2A7D48310082116A /* OAuthService.swift */,
 				4638A5002A7E82810082116A /* OAuthTokenResponseBody.swift */,
 				4638A5022A7E86900082116A /* OAuthTokenStorage.swift */,
+				465BF0982A9792E4003EC49E /* AuthViewControllerDelegate.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -149,7 +152,6 @@
 			isa = PBXGroup;
 			children = (
 				4638A4FC2A7D45FA0082116A /* SplashViewController.swift */,
-				4638A50F2A8FB8DE0082116A /* UIBlockingProgressHUD.swift */,
 			);
 			path = SplashViewController;
 			sourceTree = "<group>";
@@ -159,6 +161,7 @@
 			children = (
 				4638A5062A7E90270082116A /* URLSession+Extension.swift */,
 				4638A5082A7E90F20082116A /* URLRequest+Extensions.swift */,
+				4638A50F2A8FB8DE0082116A /* UIBlockingProgressHUD.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				46536F9B2A5EF53E00B2C178 /* ImagesListCell.swift in Sources */,
 				4638A5072A7E90270082116A /* URLSession+Extension.swift in Sources */,
 				4638A5102A8FB8DE0082116A /* UIBlockingProgressHUD.swift in Sources */,
+				465BF0992A9792E4003EC49E /* AuthViewControllerDelegate.swift in Sources */,
 				4638A5092A7E90F20082116A /* URLRequest+Extensions.swift in Sources */,
 				4638A5012A7E82810082116A /* OAuthTokenResponseBody.swift in Sources */,
 				4632B6872A6AC6830095AAAD /* ProfileViewController.swift in Sources */,

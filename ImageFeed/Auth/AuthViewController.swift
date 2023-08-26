@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol AuthViewControllerDelegate: AnyObject {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
-}
-
 class AuthViewController: UIViewController {
     
     // идентификатор перехода к экрану Web View
