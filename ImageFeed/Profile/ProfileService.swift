@@ -26,6 +26,8 @@ final class ProfileService {
         URLRequest.makeHttpRequest(path: "/me", httpMethod: Keys.httpMethod)
     }
     
+    private init() { }
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         if profile != nil { return }
@@ -41,8 +43,8 @@ final class ProfileService {
                 case .success(let body):
                     let profile = Profile(
                         username: body.username,
-                        name: "\(body.firstName) \(body.lastName)",
-                        bio: body.bio ?? "No Bio")
+                        name: "\(body.firstName) \(body.lastName ?? "")",
+                        bio: body.bio ?? "")
                     print(profile)
                     self.profile = profile
                     completion(.success(profile))

@@ -24,6 +24,8 @@ final class ProfileImageService {
         static let URL = "URL"
     }
     
+    
+    private init() { }
     func fetchProfileImageURL(token: String, username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         
         assert(Thread.isMainThread)

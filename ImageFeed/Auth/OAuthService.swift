@@ -23,6 +23,8 @@ final class OAuthService {
         }
     }
     
+    private init() { }
+    
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         assert(Thread.isMainThread)
@@ -57,24 +59,6 @@ final class OAuthService {
     }
 }
 
-//extension OAuthService {
-//
-//    // запрос и обработка данных с сервера
-//    func data(for request: URLRequest, complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void) -> URLSessionTask {
-//
-//        let decoder = JSONDecoder()
-//        return urlSession.data(for: request ) { (result: Result<Data, Error>) in
-//            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-//                Result {
-//                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-//                }
-//            }
-//            complition(response)
-//        }
-//    }
-//
-//}
-
 // создаем запрос к usplash по схеме Authorization workflow
 extension OAuthService {
     
@@ -90,6 +74,5 @@ extension OAuthService {
             baseURL: URL(string: "https://unsplash.com")!
         )
     }
-    
     
 }
