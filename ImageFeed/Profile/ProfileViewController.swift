@@ -106,12 +106,10 @@ extension ProfileViewController {
         cache.clearMemoryCache()
         cache.clearDiskCache()
     
-        let processor = RoundCornerImageProcessor(cornerRadius: 20)
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "placeholder.jpeg"),
-            options: [.processor(processor)])
+            placeholder: UIImage(named: "placeholder.jpeg"))
     }
     
 }
