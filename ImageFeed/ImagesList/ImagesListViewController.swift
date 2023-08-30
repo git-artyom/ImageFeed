@@ -15,8 +15,6 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,9 +37,7 @@ final class ImagesListViewController: UIViewController {
     
 }
 
-
 extension ImagesListViewController: UITableViewDataSource {
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photosName.count
@@ -58,17 +54,13 @@ extension ImagesListViewController: UITableViewDataSource {
         return imageListCell // показываем ячейку
     }
     
-    
 }
 
 extension ImagesListViewController: UITableViewDelegate {
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
         tableView.deselectRow(at: indexPath, animated: true) // отключаем отображение выбора ячейки
-        
     }
     
     // настраиваем размеры ячейки

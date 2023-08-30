@@ -1,6 +1,6 @@
 
 import Foundation
-
+import SwiftKeychainWrapper
 
 final class OAuthTokenStorage {
     
@@ -10,15 +10,22 @@ final class OAuthTokenStorage {
     
     private let userDefaults = UserDefaults.standard
     
-    // сохраняем и читаем значение в юзер дефолтс по ключу token
+    // раньше сохраняли и читали значение в юзер дефолтс по ключу token
+    // теперь используем keyChainWrapper
     var token: String? {
         get {
-            userDefaults.string(forKey: Keys.token.rawValue)
+            KeychainWrapper.standard.string(forKey: Keys.token.rawValue)
         }
         set {
-            userDefaults.set(newValue, forKey: Keys.token.rawValue)
+            guard let newValue = newValue else {
+                KeychainWrapper.standard.removeObject(forKey: Keys.token.rawValue)
+                return
+            }
+            let isSuccess = KeychainWrapper.standard.set(newValue, forKey: Keys.token.rawValue)
+            guard isSuccess else {
+                return
+            }
         }
     }
 
-    
 }

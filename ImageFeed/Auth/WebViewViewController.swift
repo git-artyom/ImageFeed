@@ -14,12 +14,16 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) // пользователь отменил авторизацию.
 }
 
-
 final class WebViewViewController: UIViewController {
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet var UIProgressView: UIProgressView!
+    @IBOutlet private var webView: WKWebView!
+    @IBAction func didTapBackButton(_ sender: Any) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
+    
+    private var estimatedProgressObservation: NSKeyValueObservation?
     
     // Unsplash’s OAuth2 path
     private let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
@@ -27,19 +31,9 @@ final class WebViewViewController: UIViewController {
     // делегат
     weak var delegate: WebViewViewControllerDelegate?
     
-    
-    @IBOutlet private var webView: WKWebView!
-    
-    
-    @IBAction func didTapBackButton(_ sender: Any) {
-        delegate?.webViewViewControllerDidCancel(self)
-        
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        observeProgress()
         webView.navigationDelegate = self
         
         // формируем URL из компонентов
@@ -56,9 +50,7 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
-    
 }
-
 
 extension WebViewViewController: WKNavigationDelegate {
     
@@ -77,7 +69,6 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
     
-    
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if
             let url = navigationAction.request.url,                         // Получаем из навигационного действия navigationAction URL.
@@ -91,7 +82,7 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
     }
-    
+ 
     
     // блок методов логики индикатора активности
     func showLoadingIndicator() {
@@ -102,7 +93,6 @@ extension WebViewViewController: WKNavigationDelegate {
     func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
-    
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hideLoadingIndicator()
@@ -117,37 +107,22 @@ extension WebViewViewController: WKNavigationDelegate {
     }
 }
 
-
-// блок с логикой progress bar, KVO
 extension WebViewViewController {
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    func observeProgress() {
         
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil)
-        updateProgress()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
     }
     
     private func updateProgress() {
         UIProgressView.progress = Float(webView.estimatedProgress)
         UIProgressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
-    
 }
+
+

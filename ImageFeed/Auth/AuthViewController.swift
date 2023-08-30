@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol AuthViewControllerDelegate: AnyObject {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
-}
-
-
 class AuthViewController: UIViewController {
     
     // идентификатор перехода к экрану Web View
@@ -29,15 +24,12 @@ class AuthViewController: UIViewController {
         }
     }
     
-    
 }
-
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
-    
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)

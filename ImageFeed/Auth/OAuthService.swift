@@ -10,7 +10,10 @@ import Foundation
 
 final class OAuthService {
     
+    static let shared = OAuthService()
     private let urlSession = URLSession.shared
+    private var task: URLSessionTask? // Переменная для хранения указателя на последнюю созданную задачу
+    private var lastCode: String? // Переменная для хранения значения code, которое было передано в последнем созданном запросе
     private var authToken: String? {
         get {
             return OAuthTokenStorage().token
@@ -20,52 +23,46 @@ final class OAuthService {
         }
     }
     
+    private init() { }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         
-        let request = requestAuthToken(code: code)
-        let task = data(for: request) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let body):
-                let authToken = body.accessToken
-                self.authToken = authToken
-                completion(.success(authToken))
-            case .failure(let error):
-                assertionFailure("no token")
-                completion(.failure(error))
-            }
-        }
-        task.resume()
-    }
-    
-}
-
-
-extension OAuthService {
-    
-    // запрос и обработка данных с сервера
-    func data(for request: URLRequest, complition: @escaping (Result<OAuthTokenResponseBody,Error>) -> Void) -> URLSessionTask {
+        assert(Thread.isMainThread)
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
         
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request ) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
+        guard let request = requestAuthToken(code: code) else {
+            return
+        }
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let body):
+                    let authToken = body.accessToken
+                    self.authToken = authToken
+                    completion(.success(authToken))
+                    self.task = nil
+                case .failure(let error):
+                    assertionFailure("no token")
+                    completion(.failure(error))
+                    self.lastCode = nil
                 }
             }
-            complition(response)
         }
+        
+        self.task = task
+        task.resume()
     }
-    
 }
-
 
 // создаем запрос к usplash по схеме Authorization workflow
 extension OAuthService {
     
-    func requestAuthToken(code: String) -> URLRequest {
+    func requestAuthToken(code: String) -> URLRequest? {
         URLRequest.makeHttpRequest(
             path: "/oauth/token"
             + "?client_id=\(accessKey)"
@@ -77,6 +74,5 @@ extension OAuthService {
             baseURL: URL(string: "https://unsplash.com")!
         )
     }
-    
     
 }
