@@ -22,9 +22,7 @@ final class OAuthService {
             OAuthTokenStorage().token = newValue
         }
     }
-    
-    private init() { }
-    
+        
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         assert(Thread.isMainThread)
