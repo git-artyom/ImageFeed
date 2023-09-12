@@ -5,6 +5,9 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
     
+    var largeImageURL: URL?
+    private var activityController = UIActivityViewController(activityItems: [], applicationActivities: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SingleImageView.image = image
@@ -88,4 +91,27 @@ private extension SingleImageViewController {
         scrollView.contentInset = .init(top: halfHeight, left: halfWidth, bottom: 0, right: 0)
         
     }
+}
+
+extension SingleImageViewController {
+    
+    func downloadImage() {
+        SingleImageView.kf.setImage(with: largeImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+                activityController = UIActivityViewController(
+                    activityItems: [imageResult.image as Any],
+                    applicationActivities: nil
+                )
+            case .failure:
+                return
+            }
+        }
+    }
+    
 }

@@ -5,10 +5,14 @@ final class ImagesListViewController: UIViewController {
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    
+    private var photos: [Photo] = []
+    private var imagesListService: ImagesListService?
+    private var imagesServiceObserver: NSObjectProtocol?
+
     @IBOutlet private var tableView: UITableView!
     
-    private lazy var dateFormatter: DateFormatter = { // формируем календарную дату
+    // формируем календарную дату
+    private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
@@ -40,7 +44,7 @@ final class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
+        return photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -50,8 +54,14 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        configCell(for: imageListCell, with: indexPath) //
-        return imageListCell // показываем ячейку
+        
+        let photo = photos[indexPath.row]
+        let statusOfConfiguringCell = imageListCell.configCell(using: photo.thumbImageURL, with: indexPath, date: photo.createdAt)
+        if statusOfConfiguringCell {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        return imageListCell
     }
     
 }
@@ -96,3 +106,53 @@ extension ImagesListViewController {
     }
 }
 
+extension ImagesListViewController {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+            guard let imagesListService = imagesListService else { return }
+            if indexPath.row + 1 == photos.count {
+                imagesListService.fetchPhotosNextPage()
+            }
+        }
+    
+}
+
+extension ImagesListViewController {
+    
+    func configureImageList() {
+        imagesListService = ImagesListService()
+        guard let imagesListService = imagesListService else { return }
+        imagesListService.fetchPhotosNextPage()
+        
+        imagesServiceObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.DidChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateTableViewAnimated()
+        }
+        updateTableViewAnimated()
+    }
+    
+}
+
+extension ImagesListViewController {
+    
+    func updateTableViewAnimated() {
+        guard let imagesListService = imagesListService else { return }
+        let oldCount = photos.count
+        let newCount = imagesListService.photos.count
+        photos = imagesListService.photos
+        
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in }
+        }
+    }
+    
+}
