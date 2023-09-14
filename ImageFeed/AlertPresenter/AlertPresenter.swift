@@ -8,29 +8,27 @@
 import Foundation
 import UIKit
 
+protocol AlertPresentableDelegate: AnyObject {
+    func present(alert: UIAlertController, animated flag: Bool)
+}
 
 //класс для вызова алерта
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
+    private weak var delegate: AlertPresentableDelegate?
     
-    private weak var viewController: UIViewController?
+    init(delegate: AlertPresentableDelegate?) {
+        self.delegate = delegate
+    }
     
     func show(in model: AlertModel) {
-        let alert = UIAlertController(title: model.title,
-                                      message: model.message,
-                                      preferredStyle: .alert)
-        
-        alert.view.accessibilityIdentifier = "Game results"
-        
+        let alert = UIAlertController(title: model.title, message: model.message, preferredStyle: .alert)
         let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
             model.completion()
         }
         alert.addAction(action)
-        viewController?.present(alert, animated: true, completion: nil)
+        delegate?.present(alert: alert, animated: true)
     }
     
-    init(viewController: UIViewController? ) {
-        self.viewController = viewController
-    }
 }
 
 // модель для алертов

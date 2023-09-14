@@ -71,9 +71,7 @@ final class ImagesListService {
     
 }
 
-private extension ImagesListService {
-
-    
+extension ImagesListService {
     func getNextPageNumber() -> Int {
         guard let lastLoadedPage = lastLoadedPage else { return 1 }
         return lastLoadedPage + 1
@@ -82,6 +80,58 @@ private extension ImagesListService {
     // функция запроса изображений по страницам
     func photosRequest(page: Int, perPage: Int) -> URLRequest? {
         URLRequest.makeHttpRequest(path: "/photos" + "?page=\(page)" + "&&per_page=\(perPage)", httpMethod: "GET")
+    }
+    
+}
+
+// блок методов для работы с лайками
+extension ImagesListService {
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Bool, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        if task != nil { return }
+        var requestLike = isLike ? unlikeRequest(photoId: photoId) : likeRequest(photoId: photoId)
+        guard let token = token else { return }
+        requestLike?.addValue("\(Keys.bearer) \(token)", forHTTPHeaderField: Keys.authorization)
+        
+        guard let requestLike = requestLike else { return }
+        
+        let task = urlSession.objectTask(for: requestLike) { [weak self] (result: Result<LikeResult, Error>) in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case .success(let body):
+                    let likedByUser = body.photo.likedByUser
+                    if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                        let photo = self.photos[index]
+                        let newPhoto = Photo(
+                            id: photo.id,
+                            size: photo.size,
+                            createdAt: photo.createdAt,
+                            welcomeDescription: photo.welcomeDescription,
+                            thumbImageURL: photo.thumbImageURL,
+                            largeImageURL: photo.largeImageURL,
+                            isLiked: likedByUser
+                        )
+                        self.photos[index] = newPhoto
+                    }
+                    completion(.success(likedByUser))
+                    self.task = nil
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+        self.task = task
+        task.resume()
+    }
+    
+    func likeRequest(photoId: String) -> URLRequest? {
+        URLRequest.makeHttpRequest(path: "/photos/\(photoId)/like", httpMethod: "POST")
+    }
+    
+    func unlikeRequest(photoId: String) -> URLRequest? {
+        URLRequest.makeHttpRequest(path: "/photos/\(photoId)/like", httpMethod: "DELETE")
     }
     
 }

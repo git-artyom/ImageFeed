@@ -81,7 +81,7 @@ extension ProfileViewController {
         
     }
 }
-// блок методов обновления информации о пользователе ии аватара
+// блок методов обновления информации о пользователе и аватаре
 extension ProfileViewController {
     
     func updateProfileDetails(profile: Profile?) {
@@ -105,11 +105,13 @@ extension ProfileViewController {
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
-    
+        let processor = RoundCornerImageProcessor (cornerRadius: 100)
+        
         avatarImageView.kf.indicatorType = .activity
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "placeholder.jpeg"))
+            placeholder: UIImage(named: "placeholder.jpeg"),
+            options: [.processor(processor)] )
     }
     
 }

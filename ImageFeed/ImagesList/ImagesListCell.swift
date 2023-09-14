@@ -2,21 +2,30 @@
 import UIKit
 
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     
     private struct Keys {
         static let reuseIdentifierName = "ImagesListCell"
         static let placeholderImageName = "scribble.variable"
-        static let likedImageName = "Active"
-        static let unlikedImageName = "Not Active"
+        static let likedImageName = "like_button_on"
+        static let unlikedImageName = "like_button_off"
     }
     
     static let reuseIdentifier = Keys.reuseIdentifierName
     private let gradientLayer = CAGradientLayer()
+    weak var delegate: ImagesListCellDelegate?
     
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
+    
+    @IBAction private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -47,27 +56,33 @@ extension ImagesListCell {
 }
 
 extension ImagesListCell {
-    func configCell(using photoStringURL: String, with indexPath: IndexPath, date: Date?) -> Bool {
+    func configureCell(using photoStringURL: String, with indexPath: IndexPath, date: Date?) -> Bool {
         dateLabel.text = DateService.shared.stringFromDate(date: date)
-        var status = false
-        guard let photoURL = URL(string: photoStringURL) else { return status }
+        var state = false
+        guard let photoURL = URL(string: photoStringURL) else { return state }
         let placeholderImage = UIImage(named: Keys.placeholderImageName)
         
         cellImage.kf.indicatorType = .activity
-        cellImage.kf.setImage(
-            with: photoURL,
-            placeholder: placeholderImage
-        ) { [weak self] result in
+        cellImage.kf.setImage(with: photoURL, placeholder: placeholderImage) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(_):
-                status = true
+                state = true
             case .failure:
                 cellImage.image = placeholderImage
             }
         }
-        return status
+        return state
+    }
+    
+}
+
+extension ImagesListCell {
+    func setIsLiked(_ isLiked: Bool) {
+        let likeImageText = isLiked ? Keys.likedImageName : Keys.unlikedImageName
+        guard let likeImage = UIImage(named: likeImageText) else { return }
+        likeButton.setImage(likeImage, for: .normal)
     }
     
 }

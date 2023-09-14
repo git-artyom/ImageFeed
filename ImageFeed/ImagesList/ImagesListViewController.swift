@@ -4,11 +4,12 @@ import UIKit
 final class ImagesListViewController: UIViewController {
     
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    //  private let photosName: [String] = Array(0..<20).map{ "\($0)" } // моковые фото
     private var photos: [Photo] = []
     private var imagesListService: ImagesListService?
     private var imagesServiceObserver: NSObjectProtocol?
-
+    private var alertPresenter: AlertPresenter?
+    
     @IBOutlet private var tableView: UITableView!
     
     // формируем календарную дату
@@ -22,6 +23,9 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        alertPresenter = AlertPresenter(delegate: self)
+        configureImageList()
+        
         // для содержимого таблицы мы задаём отступ сверху/снизу
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
@@ -30,8 +34,10 @@ final class ImagesListViewController: UIViewController {
         if segue.identifier == ShowSingleImageSegueIdentifier {
             if let viewController = segue.destination as? SingleImageViewController {
                 if let indexPath = sender as? IndexPath {
-                    let image = UIImage(named: photosName[indexPath.row])
-                    viewController.image = image
+                    // let image = UIImage(named: photosName[indexPath.row])
+                    viewController.largeImageURL = URL(string: photos[indexPath.row].largeImageURL)
+                    
+                    //viewController.image = image
                 }
             }
         } else {
@@ -51,22 +57,28 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) //  из всех ячеек, зарегистрированных в таблице, возвращаем ячейку по заранее добавленному идентификатору.
         
         guard let imageListCell = cell as? ImagesListCell else { // проводим приведение типов, в противном случае возвращаем обычную ячейку
-            return UITableViewCell()
-        }
+            return UITableViewCell() }
         
-        
+        imageListCell.delegate = self
         let photo = photos[indexPath.row]
-        let statusOfConfiguringCell = imageListCell.configCell(using: photo.thumbImageURL, with: indexPath, date: photo.createdAt)
+        let statusOfConfiguringCell = imageListCell.configureCell(using: photo.thumbImageURL, with: indexPath, date: photo.createdAt)
+        imageListCell.setIsLiked(photo.isLiked)
         if statusOfConfiguringCell {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-        
         return imageListCell
     }
     
 }
 
 extension ImagesListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let imagesListService = imagesListService else { return }
+        if indexPath.row + 1 == photos.count {
+            imagesListService.fetchPhotosNextPage()
+        }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
@@ -75,10 +87,7 @@ extension ImagesListViewController: UITableViewDelegate {
     
     // настраиваем размеры ячейки
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
-        }
+        let image = photos[indexPath.row]
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width
@@ -87,33 +96,6 @@ extension ImagesListViewController: UITableViewDelegate {
         return cellHeight
         
     }
-}
-
-extension ImagesListViewController {
-    
-    // отдаем для показа заполненую ячейку
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
-        
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
-        
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-        cell.likeButton.setImage(likeImage, for: .normal)
-    }
-}
-
-extension ImagesListViewController {
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-            guard let imagesListService = imagesListService else { return }
-            if indexPath.row + 1 == photos.count {
-                imagesListService.fetchPhotosNextPage()
-            }
-        }
     
 }
 
@@ -155,4 +137,48 @@ extension ImagesListViewController {
         }
     }
     
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        let isLiked = photo.isLiked
+        UIBlockingProgressHUD.show()
+        guard let imagesListService = imagesListService else { return }
+        imagesListService.changeLike(photoId: photo.id, isLike: isLiked) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let isLiked):
+                self.photos[indexPath.row].isLiked = isLiked
+                cell.setIsLiked(isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showError()
+            }
+        }
+    }
+    
+}
+
+extension ImagesListViewController {
+    func showError() {
+        let alert = AlertModel(title: "Ошибка",
+                               message: "Не удалось обработать лайк",
+                               buttonText: "Продолжить",
+                               completion: { [weak self] in
+            guard let self = self else { return }
+            dismiss(animated: true)
+        })
+        alertPresenter?.show(in: alert)
+    }
+    
+}
+
+extension ImagesListViewController: AlertPresentableDelegate {
+    func present(alert: UIAlertController, animated flag: Bool) {
+        self.present(alert, animated: flag)
+    }
 }
