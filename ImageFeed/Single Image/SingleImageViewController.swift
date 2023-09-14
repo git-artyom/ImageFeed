@@ -35,7 +35,7 @@ final class SingleImageViewController: UIViewController {
         
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-     //   rescaleAndCenterImageInScrollView(image: image)
+//        rescaleAndCenterImageInScrollView(image: image)
         UIBlockingProgressHUD.show()
         downloadImage()
     }
@@ -45,6 +45,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLayoutSubviews ()
         if let image = SingleImageView.image {
             rescaleAndCenterImageInScrollView(image: image)
+          //  anotherRescaleAndCenterImageInScrollView()
         }
     }
     

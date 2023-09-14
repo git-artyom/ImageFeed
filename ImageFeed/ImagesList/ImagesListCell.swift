@@ -9,13 +9,13 @@ protocol ImagesListCellDelegate: AnyObject {
 final class ImagesListCell: UITableViewCell {
     
     private struct Keys {
-        static let reuseIdentifierName = "ImagesListCell"
-        static let placeholderImageName = "scribble.variable"
-        static let likedImageName = "like_button_on"
-        static let unlikedImageName = "like_button_off"
+        static let reuseIdentifier = "ImagesListCell"
+        static let placeholderImage = "scribble.variable"
+        static let likedImage = "like_button_on"
+        static let unlikedImage = "like_button_off"
     }
     
-    static let reuseIdentifier = Keys.reuseIdentifierName
+    static let reuseIdentifier = Keys.reuseIdentifier
     private let gradientLayer = CAGradientLayer()
     weak var delegate: ImagesListCellDelegate?
     
@@ -60,7 +60,7 @@ extension ImagesListCell {
         dateLabel.text = DateService.shared.stringFromDate(date: date)
         var state = false
         guard let photoURL = URL(string: photoStringURL) else { return state }
-        let placeholderImage = UIImage(named: Keys.placeholderImageName)
+        let placeholderImage = UIImage(named: Keys.placeholderImage)
         
         cellImage.kf.indicatorType = .activity
         cellImage.kf.setImage(with: photoURL, placeholder: placeholderImage) { [weak self] result in
@@ -80,8 +80,8 @@ extension ImagesListCell {
 
 extension ImagesListCell {
     func setIsLiked(_ isLiked: Bool) {
-        let likeImageText = isLiked ? Keys.likedImageName : Keys.unlikedImageName
-        guard let likeImage = UIImage(named: likeImageText) else { return }
+        let likedImage = isLiked ? Keys.likedImage : Keys.unlikedImage
+        guard let likeImage = UIImage(named: likedImage) else { return }
         likeButton.setImage(likeImage, for: .normal)
     }
     
