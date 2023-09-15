@@ -15,8 +15,8 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
-//        present(activityController, animated: true, completion: nil)
-
+        //        present(activityController, animated: true, completion: nil)
+        
         let share = UIActivityViewController(
             activityItems: [image as Any],
             applicationActivities: nil
@@ -35,7 +35,7 @@ final class SingleImageViewController: UIViewController {
         
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-//        rescaleAndCenterImageInScrollView(image: image)
+        //        rescaleAndCenterImageInScrollView(image: image)
         UIBlockingProgressHUD.show()
         downloadImage()
     }
@@ -45,7 +45,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLayoutSubviews ()
         if let image = SingleImageView.image {
             rescaleAndCenterImageInScrollView(image: image)
-          //  anotherRescaleAndCenterImageInScrollView()
+            //  anotherRescaleAndCenterImageInScrollView()
         }
     }
     
@@ -126,23 +126,42 @@ extension SingleImageViewController {
 }
 
 extension SingleImageViewController {
+    //    func showError() {
+    //        let alert = AlertModel(title: "Ошибка",
+    //                               message: "Попробовать снова?",
+    //                               buttonText: "Повторить",
+    //                               completion: { [weak self] in
+    //            guard let self = self else { return }
+    //            UIBlockingProgressHUD.show()
+    //            downloadImage()
+    //        })
+    //
+    //        alertPresenter?.show(in: alert)
+    //    }
     func showError() {
         let alert = AlertModel(title: "Ошибка",
-                               message: "Попробовать снова?",
-                               buttonText: "Повторить",
+                               message: "Попробовать ещё раз?",
+                               buttonText: "Да",
                                completion: { [weak self] in
             guard let self = self else { return }
             UIBlockingProgressHUD.show()
             downloadImage()
+        },
+                               secondButtonText: "Нет",
+                               secondCompletion: { [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true)
         })
-        
         alertPresenter?.show(in: alert)
     }
     
 }
+
 extension SingleImageViewController: AlertPresentableDelegate {
     func present(alert: UIAlertController, animated flag: Bool) {
         self.present(alert, animated: flag)
     }
     
 }
+
+

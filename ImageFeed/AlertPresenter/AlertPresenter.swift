@@ -21,20 +21,22 @@ final class AlertPresenter: AlertPresenterProtocol {
     }
     
     func show(in model: AlertModel) {
-        let alert = UIAlertController(title: model.title, message: model.message, preferredStyle: .alert)
+        let alert = UIAlertController(title: model.title,
+                                      message: model.message,
+                                      preferredStyle: .alert)
+        
         let action = UIAlertAction(title: model.buttonText, style: .default) { _ in
             model.completion()
         }
         alert.addAction(action)
+        
+        if let secondButtonText = model.secondButtonText {
+            let secondAction = UIAlertAction(title: secondButtonText, style: .default) { _ in
+                model.secondCompletion()
+            }
+            alert.addAction(secondAction)
+        }
         delegate?.present(alert: alert, animated: true)
     }
     
-}
-
-// модель для алертов
-struct AlertModel {
-    let title: String
-    let message: String
-    let buttonText: String
-    let completion: () -> Void
 }

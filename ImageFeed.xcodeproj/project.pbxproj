@@ -11,6 +11,7 @@
 		4617FCCD2A9F9DDD000CDB74 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617FCCC2A9F9DDD000CDB74 /* ImagesListService.swift */; };
 		4617FCCF2AB0CD94000CDB74 /* PhotoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617FCCE2AB0CD94000CDB74 /* PhotoResults.swift */; };
 		4617FCD12AB0D24D000CDB74 /* DateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617FCD02AB0D24D000CDB74 /* DateService.swift */; };
+		4617FCD32AB48ED4000CDB74 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617FCD22AB48ED4000CDB74 /* AlertModel.swift */; };
 		4632B6872A6AC6830095AAAD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4632B6862A6AC6830095AAAD /* ProfileViewController.swift */; };
 		4632B68C2A6C31E50095AAAD /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4632B68B2A6C31E50095AAAD /* SingleImageViewController.swift */; };
 		4632B6912A7AC0110095AAAD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4632B6902A7AC0110095AAAD /* Constants.swift */; };
@@ -65,6 +66,7 @@
 		4617FCCC2A9F9DDD000CDB74 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		4617FCCE2AB0CD94000CDB74 /* PhotoResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResults.swift; sourceTree = "<group>"; };
 		4617FCD02AB0D24D000CDB74 /* DateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateService.swift; sourceTree = "<group>"; };
+		4617FCD22AB48ED4000CDB74 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		4632B6862A6AC6830095AAAD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		4632B68B2A6C31E50095AAAD /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		4632B6902A7AC0110095AAAD /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				46A986F52A9A2ACE008C2CA3 /* ProfileImageModel.swift */,
 				4617FCCA2A9F9927000CDB74 /* Photo.swift */,
 				4617FCCE2AB0CD94000CDB74 /* PhotoResults.swift */,
+				4617FCD22AB48ED4000CDB74 /* AlertModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				4638A5192A94ED790082116A /* ProfileImageService.swift in Sources */,
 				4638A5032A7E86900082116A /* OAuthTokenStorage.swift in Sources */,
 				4638A4FD2A7D45FA0082116A /* SplashViewController.swift in Sources */,
+				4617FCD32AB48ED4000CDB74 /* AlertModel.swift in Sources */,
 				46A986F62A9A2ACE008C2CA3 /* ProfileImageModel.swift in Sources */,
 				4617FCCD2A9F9DDD000CDB74 /* ImagesListService.swift in Sources */,
 			);

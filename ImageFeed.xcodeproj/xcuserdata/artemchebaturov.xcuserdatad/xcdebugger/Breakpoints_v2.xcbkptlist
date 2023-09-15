@@ -14,8 +14,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "updateProfileImage()"
             landmarkType = "7">
             <Locations>
@@ -138,8 +138,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
             landmarkName = "updateProfileDetails(profile:)"
             landmarkType = "7">
             <Locations>
@@ -216,8 +216,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
             landmarkName = "updateProfileDetails(profile:)"
             landmarkType = "7">
             <Locations>
@@ -295,8 +295,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "updateProfileDetails(profile:)"
             landmarkType = "7">
             <Locations>
@@ -437,8 +437,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "updateProfileImage()"
             landmarkType = "7">
             <Locations>
@@ -515,8 +515,8 @@
             filePath = "ImageFeed/Profile/ProfileViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
             landmarkName = "updateProfileImage()"
             landmarkType = "7">
          </BreakpointContent>
