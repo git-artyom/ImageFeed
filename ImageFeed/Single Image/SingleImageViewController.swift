@@ -15,13 +15,13 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
-        //        present(activityController, animated: true, completion: nil)
+                present(activityController, animated: true, completion: nil)
         
-        let share = UIActivityViewController(
-            activityItems: [image as Any],
-            applicationActivities: nil
-        )
-        present(share, animated: true, completion: nil)
+//        let share = UIActivityViewController(
+//            activityItems: [image as Any],
+//            applicationActivities: nil
+//        )
+//        present(share, animated: true, completion: nil)
     }
     
     var largeImageURL: URL?

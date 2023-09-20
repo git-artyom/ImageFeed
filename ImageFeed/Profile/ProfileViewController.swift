@@ -23,26 +23,30 @@ final class ProfileViewController: UIViewController {
     //        action: #selector(Self.didTapButton)
     //    )
     
+//    private let logOutButton: UIButton = {
+//        let logOutButton = UIButton.systemButton(
+//            with: UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward")!,
+//            target: self,
+//            action: #selector(didTapButton)
+//        )
+//        return logOutButton
+//    }()
+    
     private let logOutButton: UIButton = {
-        let logOutButton = UIButton.systemButton(
-            with: UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward")!,
-            target: self,
-            action: #selector(Self.didTapButton)
-        )
-        return logOutButton
+        let image = UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward")!
+        let button = UIButton(type: .custom)
+        button.setImage(image, for: .normal)
+        
+        return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
+        addButtonAction()
         updateProfileImage()
         updateProfileDetails(profile: profileServiсe.profile)
         
-    }
-    
-    @objc
-    private func didTapButton() {
-        showExitAlert()
     }
     
 }
@@ -111,6 +115,7 @@ extension ProfileViewController {
         updateProfileImage()
     }
     
+    // метод показа аватара профиля через кингфишер
     private func updateProfileImage() {
         guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { print("error in update profile image"); return }
         let cache = ImageCache.default
@@ -126,9 +131,9 @@ extension ProfileViewController {
     }
     
 }
-
+// метод разлогина
 extension ProfileViewController {
-    // метод разлогинивания
+    
     func logOut() {
         OAuthTokenStorage().token = nil
         WebViewViewController.cleanCookies()
@@ -142,6 +147,7 @@ extension ProfileViewController {
     
 }
 
+// показываем перед выходом алерт с выбором
 extension ProfileViewController {
     func showExitAlert() {
         DispatchQueue.main.async {
@@ -169,3 +175,28 @@ extension ProfileViewController: AlertPresentableDelegate {
     }
     
 }
+
+// добавляем экшены для кнопкм выхода отдельно во viewDidLoad
+extension ProfileViewController {
+    
+    @objc
+    private func didTapButton() {
+        showExitAlert()
+    }
+    
+    func addButtonAction() {
+        if #available(iOS 14.0, *) {
+            let logOutAction = UIAction(title: "showAlert") { [weak self] (action) in
+                guard let self = self else { return }
+                self.showExitAlert()
+            }
+            logOutButton.addAction(logOutAction, for: .touchUpInside)
+        } else {
+            logOutButton.addTarget(ProfileViewController.self,
+                                   action: #selector(didTapButton),
+                                   for: .touchUpInside)
+        }
+    }
+    
+}
+
