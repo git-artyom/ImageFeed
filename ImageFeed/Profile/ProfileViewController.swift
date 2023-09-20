@@ -17,21 +17,6 @@ final class ProfileViewController: UIViewController {
         let profileImage = UIImageView(image: UIImage(named: "avatar"))
         return profileImage }()
     
-    //    private let logOutButton = UIButton.systemButton(
-    //        with: UIImage(named: "logout_button")!,
-    //        target: self,  //ProfileViewController.self
-    //        action: #selector(Self.didTapButton)
-    //    )
-    
-//    private let logOutButton: UIButton = {
-//        let logOutButton = UIButton.systemButton(
-//            with: UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward")!,
-//            target: self,
-//            action: #selector(didTapButton)
-//        )
-//        return logOutButton
-//    }()
-    
     private let logOutButton: UIButton = {
         let image = UIImage(named: "logout_button") ?? UIImage(systemName: "ipad.and.arrow.forward")!
         let button = UIButton(type: .custom)
@@ -45,6 +30,7 @@ final class ProfileViewController: UIViewController {
         addViews()
         addButtonAction()
         updateProfileImage()
+        alertPresenter = AlertPresenter(delegate: self)
         updateProfileDetails(profile: profileServiсe.profile)
         
     }
@@ -52,6 +38,11 @@ final class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController {
+    
+    @objc
+    func didTapButton() {
+        showExitAlert()
+    }
     
     private func addViews() {
         
@@ -178,15 +169,9 @@ extension ProfileViewController: AlertPresentableDelegate {
 
 // добавляем экшены для кнопкм выхода отдельно во viewDidLoad
 extension ProfileViewController {
-    
-    @objc
-    private func didTapButton() {
-        showExitAlert()
-    }
-    
-    func addButtonAction() {
+    private func addButtonAction() {
         if #available(iOS 14.0, *) {
-            let logOutAction = UIAction(title: "showAlert") { [weak self] (action) in
+            let logOutAction = UIAction(title: "showAlert") { [weak self] (ACTION) in
                 guard let self = self else { return }
                 self.showExitAlert()
             }
