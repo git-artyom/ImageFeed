@@ -5,19 +5,41 @@ import UIKit
 
 final class SingleImageViewController: UIViewController {
     
+    @IBOutlet private var backButton: UIButton!
+    @IBOutlet private var SingleImageView: UIImageView!
+    @IBOutlet private var shareButton: UIButton!
+    @IBOutlet private var scrollView: UIScrollView!
+    
+    @IBAction func didTapBackButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func didTapShareButton(_ sender: UIButton) {
+                present(activityController, animated: true, completion: nil)
+    }
+    
+    var largeImageURL: URL?
+    private var activityController = UIActivityViewController(activityItems: [], applicationActivities: nil)
+    private var alertPresenter: AlertPresenter?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        SingleImageView.image = image
+        alertPresenter = AlertPresenter(delegate: self)
         
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        rescaleAndCenterImageInScrollView(image: image)
+        //        rescaleAndCenterImageInScrollView(image: image)
+        UIBlockingProgressHUD.show()
+        downloadImage()
     }
     
     // дополнительный метод позиционирования вью показанный наставником на семинаре
     override func viewDidLayoutSubviews () {
         super.viewDidLayoutSubviews ()
-        anotherRescaleAndCenterImageInScrollView()
+        if let image = SingleImageView.image {
+            rescaleAndCenterImageInScrollView(image: image)
+            //  anotherRescaleAndCenterImageInScrollView()
+        }
     }
     
     // дополнительно проверяем создание вью
@@ -28,22 +50,6 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
-    
-    @IBOutlet private var SingleImageView: UIImageView!
-    
-    @IBAction func didTapBackButton(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func didTapShareButton(_ sender: UIButton) {
-        let share = UIActivityViewController(
-            activityItems: [image as Any],
-            applicationActivities: nil
-        )
-        present(share, animated: true, completion: nil)
-    }
-    
-    @IBOutlet var scrollView: UIScrollView!
     
 }
 
@@ -76,7 +82,6 @@ extension SingleImageViewController: UIScrollViewDelegate {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
-    
 }
 
 // дополнительный метод позиционирования вью показанный наставником на семинаре
@@ -89,3 +94,56 @@ private extension SingleImageViewController {
         
     }
 }
+
+extension SingleImageViewController {
+    
+    func downloadImage() {
+        SingleImageView.kf.setImage(with: largeImageURL) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+                activityController = UIActivityViewController(
+                    activityItems: [imageResult.image as Any],
+                    applicationActivities: nil
+                )
+            case .failure:
+                self.showError()
+                return
+            }
+        }
+    }
+    
+}
+
+extension SingleImageViewController {
+
+    func showError() {
+        let alert = AlertModel(title: "Ошибка",
+                               message: "Попробовать ещё раз?",
+                               buttonText: "Да",
+                               completion: { [weak self] in
+            guard let self = self else { return }
+            UIBlockingProgressHUD.show()
+            downloadImage()
+        },
+                               secondButtonText: "Нет",
+                               secondCompletion: { [weak self] in
+            guard let self = self else { return }
+            self.dismiss(animated: true)
+        })
+        alertPresenter?.show(in: alert)
+    }
+    
+}
+
+extension SingleImageViewController: AlertPresentableDelegate {
+    func present(alert: UIAlertController, animated flag: Bool) {
+        self.present(alert, animated: flag)
+    }
+    
+}
+
+

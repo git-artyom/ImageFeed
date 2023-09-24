@@ -118,6 +118,7 @@ extension SplashViewController: AuthViewControllerDelegate{
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true)
     }
+    
 }
 
 extension SplashViewController {
@@ -129,7 +130,7 @@ extension SplashViewController {
             guard let self = self else { return }
             oauth2TokenStorage.token = nil
         })
-        alertPresenter = AlertPresenter(viewController: self)
+     //   alertPresenter = AlertPresenter(delegate: self)
         alertPresenter?.show(in: alert)
     }
     
@@ -148,3 +149,8 @@ extension SplashViewController {
  
 }
 
+extension SplashViewController: AlertPresentableDelegate {
+    func present(alert: UIAlertController, animated flag: Bool) {
+        self.present(alert, animated: flag)
+    }
+}

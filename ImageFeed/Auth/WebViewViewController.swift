@@ -82,7 +82,7 @@ extension WebViewViewController: WKNavigationDelegate {
             return nil
         }
     }
- 
+    
     
     // блок методов логики индикатора активности
     func showLoadingIndicator() {
@@ -125,4 +125,19 @@ extension WebViewViewController {
     }
 }
 
+// метод очистки куки
+extension WebViewViewController {
+    static func cleanCookies() {
+        // Очищаем все куки из хранилища
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        // Запрашиваем все данные из локального хранилища
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) {
+            // Массив полученных записей удаляем из хранилища
+            records in records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+    
+}
 
