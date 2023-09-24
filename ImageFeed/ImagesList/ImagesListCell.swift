@@ -19,9 +19,9 @@ final class ImagesListCell: UITableViewCell {
     private let gradientLayer = CAGradientLayer()
     weak var delegate: ImagesListCellDelegate?
     
-    @IBOutlet var cellImage: UIImageView!
-    @IBOutlet var likeButton: UIButton!
-    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
     
     @IBAction private func likeButtonClicked() {
         delegate?.imageListCellDidTapLike(self)

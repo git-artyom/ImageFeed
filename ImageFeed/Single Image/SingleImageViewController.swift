@@ -16,12 +16,6 @@ final class SingleImageViewController: UIViewController {
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
                 present(activityController, animated: true, completion: nil)
-        
-//        let share = UIActivityViewController(
-//            activityItems: [image as Any],
-//            applicationActivities: nil
-//        )
-//        present(share, animated: true, completion: nil)
     }
     
     var largeImageURL: URL?
@@ -30,7 +24,6 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //      SingleImageView.image = image
         alertPresenter = AlertPresenter(delegate: self)
         
         scrollView.minimumZoomScale = 0.1
@@ -126,18 +119,7 @@ extension SingleImageViewController {
 }
 
 extension SingleImageViewController {
-    //    func showError() {
-    //        let alert = AlertModel(title: "Ошибка",
-    //                               message: "Попробовать снова?",
-    //                               buttonText: "Повторить",
-    //                               completion: { [weak self] in
-    //            guard let self = self else { return }
-    //            UIBlockingProgressHUD.show()
-    //            downloadImage()
-    //        })
-    //
-    //        alertPresenter?.show(in: alert)
-    //    }
+
     func showError() {
         let alert = AlertModel(title: "Ошибка",
                                message: "Попробовать ещё раз?",
