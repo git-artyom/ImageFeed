@@ -3,11 +3,11 @@ import UIKit
 import Kingfisher
 
 protocol ProfileViewControllerProtocol: AnyObject {
-    func addButtonAction(action: Selector)
+    func addButtonAction()
     func showExitAlert()
-    func logOut(window: UIWindow)
-    func updateProfileDetails(profile: Profile?)
-    func updateProfileImage(url: URL, placeholder: UIImage)
+    func logOut()
+    func updateProfileDetails()
+    func updateProfileImage()
 }
 
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
