@@ -11,10 +11,8 @@ import Foundation
 extension URLRequest {
     
     // static - экземпляру не требуется вызывать статическую функцию, поскольку ее можно вызвать из самого типа
-    static func makeHttpRequest(path: String, httpMethod: String, baseURL: URL? = DefaultBaseURL) -> URLRequest? {
-//        var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
-//        request.httpMethod = httpMethod
-//        return request
+    static func makeHttpRequest(path: String, httpMethod: String, baseURL: URL? = Constants.DefaultBaseURL) -> URLRequest? {
+
         guard let baseURL = baseURL, let url = URL(string: path, relativeTo: baseURL) else {
             assertionFailure("не удалось создать url: \(path)")
             return nil }

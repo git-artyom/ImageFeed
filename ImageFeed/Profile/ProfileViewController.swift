@@ -3,25 +3,31 @@ import UIKit
 import Kingfisher
 
 protocol ProfileViewControllerProtocol: AnyObject {
-    func addButtonAction()
-    func showExitAlert()
-    func logOut()
-    func updateProfileDetails()
-    func updateProfileImage()
+    var presenter: ProfileViewPresenterProtocol { get set }
+    var avatarImageView: UIImageView { get set }
+    var nameLabel: UILabel { get set }
+    var loginLabel: UILabel { get set }
+    var descriptionLabel: UILabel { get set }
+//    func updateProfileDetails(profile: Profile?)
+//    func updateProfileImage()
+    
 }
 
-final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+ class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
-    private let nameLabel = UILabel()
-    private let loginLabel = UILabel()
-    private let descriptionLabel = UILabel()
+    var nameLabel = UILabel()
+    var loginLabel = UILabel()
+    var descriptionLabel = UILabel()
+    var presenter: ProfileViewPresenterProtocol = {
+        return ProfileViewPresenter()
+    }()
     private let profileServiсe = ProfileService.shared
     private let OAuthToken = OAuthTokenStorage()
     private var profileImageServiceObserver: NSObjectProtocol?
     private let profileImageService = ProfileImageService.shared
     private var alertPresenter: AlertPresenter?
     
-    private let avatarImageView : UIImageView = {
+    var avatarImageView : UIImageView = {
         let profileImage = UIImageView(image: UIImage(named: "avatar"))
         return profileImage }()
     
@@ -37,10 +43,87 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         super.viewDidLoad()
         addViews()
         addButtonAction()
-        updateProfileImage()
+        presenter.profileViewController = self
+//        presenter.updateProfileDetails(profile: profileServiсe.profile)
+//        presenter.updateProfileImage()
         alertPresenter = AlertPresenter(delegate: self)
-        updateProfileDetails(profile: profileServiсe.profile)
+        presenter.controllerDidLoad()
         
+        
+    }
+    
+//    func updateProfileDetails(profile: Profile?) {
+//
+//        guard let profile = profile else { print("error in update profile details"); return }
+//        nameLabel.text = profile.name
+//        loginLabel.text = profile.login
+//        descriptionLabel.text = profile.bio
+//
+//        profileImageServiceObserver = NotificationCenter.default.addObserver(
+//            forName: ProfileImageService.DidChangeNotification,
+//            object: nil,
+//            queue: .main) { [weak self] _ in guard let self = self else { return }
+//                self.updateProfileImage()
+//            }
+//        updateProfileImage()
+//    }
+//
+//    // метод показа аватара профиля через кингфишер
+//    func updateProfileImage() {
+//        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { print("error in update profile image"); return }
+//        let cache = ImageCache.default
+//        cache.clearMemoryCache()
+//        cache.clearDiskCache()
+//        let processor = RoundCornerImageProcessor (cornerRadius: 100)
+//
+//        avatarImageView.kf.indicatorType = .activity
+//        avatarImageView.kf.setImage(
+//            with: url,
+//            placeholder: UIImage(named: "placeholder.jpeg"),
+//            options: [.processor(processor)] )
+//    }
+    
+    func logOut() {
+        OAuthTokenStorage().token = nil
+        WebViewViewController.cleanCookies()
+        guard let window = UIApplication.shared.windows.first else {
+            print("error in logout")
+            assertionFailure("logout error")
+            return
+        }
+        window.rootViewController = SplashViewController()
+    }
+    
+    func showExitAlert() {
+        DispatchQueue.main.async {
+            let alert = AlertModel(title: "Выход",
+                                   message: "Уже уходите?",
+                                   buttonText: "Да",
+                                   completion: { [weak self] in
+                guard let self = self else { return }
+                self.logOut()
+            },
+                                   secondButtonText: "Нет",
+                                   secondCompletion: { [weak self] in
+                guard let self = self else { return }
+                self.dismiss(animated: true)
+            })
+            self.alertPresenter?.show(in: alert)
+        }
+    }
+    
+    private func addButtonAction() {
+        if #available(iOS 14.0, *) {
+            let logOutAction = UIAction(title: "showAlert") { [weak self] (ACTION) in
+                guard let self = self else { return }
+                self.showExitAlert()
+            }
+            logOutButton.addAction(logOutAction, for: .touchUpInside)
+        } else {
+            logOutButton.addTarget(ProfileViewController.self,
+                                   action: #selector(didTapButton),
+                                   for: .touchUpInside)
+        }
     }
     
 }
@@ -95,78 +178,6 @@ extension ProfileViewController {
     }
     
 }
-// блок методов обновления информации о пользователе и аватаре
-extension ProfileViewController {
-    
-    func updateProfileDetails(profile: Profile?) {
-        
-        guard let profile = profile else { print("error in update profile details"); return }
-        nameLabel.text = profile.name
-        loginLabel.text = profile.login
-        descriptionLabel.text = profile.bio
-        
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.DidChangeNotification,
-            object: nil,
-            queue: .main) { [weak self] _ in guard let self = self else { return }
-                self.updateProfileImage()
-            }
-        updateProfileImage()
-    }
-    
-    // метод показа аватара профиля через кингфишер
-    private func updateProfileImage() {
-        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { print("error in update profile image"); return }
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
-        let processor = RoundCornerImageProcessor (cornerRadius: 100)
-        
-        avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "placeholder.jpeg"),
-            options: [.processor(processor)] )
-    }
-    
-}
-// метод разлогина
-extension ProfileViewController {
-    
-    func logOut() {
-        OAuthTokenStorage().token = nil
-        WebViewViewController.cleanCookies()
-        guard let window = UIApplication.shared.windows.first else {
-            print("error in logout")
-            assertionFailure("logout error")
-            return
-        }
-        window.rootViewController = SplashViewController()
-    }
-    
-}
-
-// показываем перед выходом алерт с выбором
-extension ProfileViewController {
-    func showExitAlert() {
-        DispatchQueue.main.async {
-            let alert = AlertModel(title: "Выход",
-                                   message: "Уже уходите?",
-                                   buttonText: "Да",
-                                   completion: { [weak self] in
-                guard let self = self else { return }
-                self.logOut()
-            },
-                                   secondButtonText: "Нет",
-                                   secondCompletion: { [weak self] in
-                guard let self = self else { return }
-                self.dismiss(animated: true)
-            })
-            self.alertPresenter?.show(in: alert)
-        }
-    }
-    
-}
 
 extension ProfileViewController: AlertPresentableDelegate {
     func present(alert: UIAlertController, animated flag: Bool) {
@@ -175,21 +186,96 @@ extension ProfileViewController: AlertPresentableDelegate {
     
 }
 
-// добавляем экшены для кнопкм выхода отдельно во viewDidLoad
-extension ProfileViewController {
-    private func addButtonAction() {
-        if #available(iOS 14.0, *) {
-            let logOutAction = UIAction(title: "showAlert") { [weak self] (ACTION) in
-                guard let self = self else { return }
-                self.showExitAlert()
-            }
-            logOutButton.addAction(logOutAction, for: .touchUpInside)
-        } else {
-            logOutButton.addTarget(ProfileViewController.self,
-                                   action: #selector(didTapButton),
-                                   for: .touchUpInside)
-        }
-    }
-    
-}
+// блок методов обновления информации о пользователе и аватаре
+//extension ProfileViewController {
+//
+//    func updateProfileDetails(profile: Profile?) {
+//
+//        guard let profile = profile else { print("error in update profile details"); return }
+//        nameLabel.text = profile.name
+//        loginLabel.text = profile.login
+//        descriptionLabel.text = profile.bio
+//
+//        profileImageServiceObserver = NotificationCenter.default.addObserver(
+//            forName: ProfileImageService.DidChangeNotification,
+//            object: nil,
+//            queue: .main) { [weak self] _ in guard let self = self else { return }
+//                self.updateProfileImage()
+//            }
+//        updateProfileImage()
+//    }
+//
+//    // метод показа аватара профиля через кингфишер
+//    private func updateProfileImage() {
+//        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { print("error in update profile image"); return }
+//        let cache = ImageCache.default
+//        cache.clearMemoryCache()
+//        cache.clearDiskCache()
+//        let processor = RoundCornerImageProcessor (cornerRadius: 100)
+//
+//        avatarImageView.kf.indicatorType = .activity
+//        avatarImageView.kf.setImage(
+//            with: url,
+//            placeholder: UIImage(named: "placeholder.jpeg"),
+//            options: [.processor(processor)] )
+//    }
+//
+//}
+// метод разлогина
+//extension ProfileViewController {
+//
+//    func logOut() {
+//        OAuthTokenStorage().token = nil
+//        WebViewViewController.cleanCookies()
+//        guard let window = UIApplication.shared.windows.first else {
+//            print("error in logout")
+//            assertionFailure("logout error")
+//            return
+//        }
+//        window.rootViewController = SplashViewController()
+//    }
+//
+//}
 
+// показываем перед выходом алерт с выбором
+//extension ProfileViewController {
+//    func showExitAlert() {
+//        DispatchQueue.main.async {
+//            let alert = AlertModel(title: "Выход",
+//                                   message: "Уже уходите?",
+//                                   buttonText: "Да",
+//                                   completion: { [weak self] in
+//                guard let self = self else { return }
+//                self.logOut()
+//            },
+//                                   secondButtonText: "Нет",
+//                                   secondCompletion: { [weak self] in
+//                guard let self = self else { return }
+//                self.dismiss(animated: true)
+//            })
+//            self.alertPresenter?.show(in: alert)
+//        }
+//    }
+//
+//}
+
+
+
+// добавляем экшены для кнопкм выхода отдельно во viewDidLoad
+//extension ProfileViewController {
+//    private func addButtonAction() {
+//        if #available(iOS 14.0, *) {
+//            let logOutAction = UIAction(title: "showAlert") { [weak self] (ACTION) in
+//                guard let self = self else { return }
+//                self.showExitAlert()
+//            }
+//            logOutButton.addAction(logOutAction, for: .touchUpInside)
+//        } else {
+//            logOutButton.addTarget(ProfileViewController.self,
+//                                   action: #selector(didTapButton),
+//                                   for: .touchUpInside)
+//        }
+//    }
+//
+//}
+//

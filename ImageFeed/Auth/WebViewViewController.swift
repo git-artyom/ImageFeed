@@ -20,15 +20,13 @@ public protocol WebViewViewControllerProtocol: AnyObject {
     func setProgressHidden(_ isHidden: Bool)
 }
 
-final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
     var presenter: WebViewPresenterProtocol?
+    weak var delegate: WebViewViewControllerDelegate?
     
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var UIProgressView: UIProgressView!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    
-    
-    weak var delegate: WebViewViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
