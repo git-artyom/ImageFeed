@@ -2,7 +2,15 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    func addButtonAction(action: Selector)
+    func showExitAlert()
+    func logOut(window: UIWindow)
+    func updateProfileDetails(profile: Profile?)
+    func updateProfileImage(url: URL, placeholder: UIImage)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     private let nameLabel = UILabel()
     private let loginLabel = UILabel()
