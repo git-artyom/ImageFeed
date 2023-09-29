@@ -55,17 +55,17 @@ final class OAuthService {
         self.task = task
         task.resume()
     }
+    
 }
 
 // создаем запрос к usplash по схеме Authorization workflow
 extension OAuthService {
-    
     func requestAuthToken(code: String) -> URLRequest? {
         URLRequest.makeHttpRequest(
             path: "/oauth/token"
-            + "?client_id=\(accessKey)"
-            + "&&client_secret=\(secretKey)"
-            + "&&redirect_uri=\(redirectURI)"
+            + "?client_id=\(Constants.AccessKey)"
+            + "&&client_secret=\(Constants.SecretKey)"
+            + "&&redirect_uri=\(Constants.RedirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
