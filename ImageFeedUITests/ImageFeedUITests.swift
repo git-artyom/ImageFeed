@@ -19,7 +19,7 @@ class Image_FeedUITests: XCTestCase {
     
     // тестируем сценарий авторизации
     func testAuth() throws {
-        sleep(5)
+        sleep(10)
 
         app.buttons["Authenticate"].tap()
         let webView = app.webViews["UnsplashWebView"]
