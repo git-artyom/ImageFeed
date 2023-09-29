@@ -116,7 +116,6 @@ extension WebViewViewController {
     
 }
 
-
 // блок методов логики индикатора активности
 extension WebViewViewController {
     func showLoadingIndicator() {
