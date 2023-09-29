@@ -29,13 +29,13 @@ class Image_FeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         sleep(5)
         loginTextField.tap()
-        loginTextField.typeText("powerslave42@yandex.ru")
+        loginTextField.typeText("")
         loginTextField.swipeUp()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         sleep(5)
         passwordTextField.tap()
-        passwordTextField.typeText("1312Ab1312")
+        passwordTextField.typeText("")
         webView.swipeUp()
         
         let webViewsQuery = app.webViews
