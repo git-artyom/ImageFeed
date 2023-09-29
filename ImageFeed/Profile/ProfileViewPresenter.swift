@@ -58,19 +58,6 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             options: [.processor(processor)] )
     }
 
-    //    func updateProfileImage() {
-    //        guard let avatarUrl = profileImageService.avatarURL, let url = URL(string: avatarUrl) else { print("error in update profile image"); return }
-    //        let cache = ImageCache.default
-    //        cache.clearMemoryCache()
-    //        cache.clearDiskCache()
-    //        let processor = RoundCornerImageProcessor (cornerRadius: 100)
-    //
-    //        avatarImageView.kf.indicatorType = .activity
-    //        avatarImageView.kf.setImage(
-    //            with: url,
-    //            placeholder: UIImage(named: "placeholder.jpeg"),
-    //            options: [.processor(processor)] )
-    //    }
 }
 
 

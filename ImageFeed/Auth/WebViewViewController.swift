@@ -33,6 +33,8 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
+        webView.accessibilityIdentifier = "UnsplashWebView"
+
     }
     
     @IBAction private func didTapBackButton(_ sender: Any?) {
@@ -91,9 +93,11 @@ extension WebViewViewController: WKNavigationDelegate {
     private func code(from navigationAction: WKNavigationAction) -> String? {
         if let url = navigationAction.request.url {
             return presenter?.code(from: url)
+        } else {
+            return nil
         }
-        return nil
     }
+    
 }
 
 //метод очистки куки
