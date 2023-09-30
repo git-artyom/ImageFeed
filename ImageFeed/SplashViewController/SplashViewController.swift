@@ -10,8 +10,8 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
-
-   // private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
+    
+    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oauth2Service = OAuthService()
     private let oauth2TokenStorage = OAuthTokenStorage()
     private let profileService = ProfileService.shared
@@ -34,27 +34,44 @@ final class SplashViewController: UIViewController {
         view.backgroundColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 100)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // проверяем авторизовался ли пользователь, если да переходим на экран с картинками
-        if let authToken = oauth2TokenStorage.token{
-            self.fetchProfile(token: authToken)
-//            switchToTabBarController()
-        } else {
-            switchToAuthViewController()
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+    
+            // проверяем авторизовался ли пользователь, если да переходим на экран с картинками
+            if let authToken = oauth2TokenStorage.token{
+                self.fetchProfile(token: authToken)
+    //            switchToTabBarController()
+            } else {
+                switchToAuthViewController()
+            }
         }
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//
+//        guard UIBlockingProgressHUD.isShowing == false else { return }
+//        if let authToken = oauth2TokenStorage.token {
+//            self.fetchProfile(token: authToken)
+//            switchToTabBarController()
+//        } else {
+//            guard let authViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {
+//                assertionFailure("Failed to show Authentication Screen")
+//                return
+//            }
+//            authViewController.delegate = self
+//            authViewController.modalPresentationStyle = .fullScreen
+//            present(authViewController, animated: true)
+//        }
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   //     setNeedsStatusBarAppearanceUpdate()
+        //     setNeedsStatusBarAppearanceUpdate()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-
+    
     // здесь запрашиваем токен и передаем в функцию запроса пользовательской информации
     private func fetchOAuthToken(_ code: String) {
         oauth2Service.fetchOAuthToken(code) { [weak self] result in
@@ -69,6 +86,7 @@ final class SplashViewController: UIViewController {
                 break
             }
         }
+        
     }
     
     // запрашиваем профиль и переходим во флоу после авторизации
@@ -129,8 +147,10 @@ extension SplashViewController {
                                completion: { [weak self] in
             guard let self = self else { return }
             oauth2TokenStorage.token = nil
+            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+
         })
-     //   alertPresenter = AlertPresenter(delegate: self)
+        //   alertPresenter = AlertPresenter(delegate: self)
         alertPresenter?.show(in: alert)
     }
     
@@ -146,7 +166,7 @@ extension SplashViewController {
             splashScreenImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
- 
+    
 }
 
 extension SplashViewController: AlertPresentableDelegate {
