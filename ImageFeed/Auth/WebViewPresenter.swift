@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 public protocol WebViewPresenterProtocol {
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
